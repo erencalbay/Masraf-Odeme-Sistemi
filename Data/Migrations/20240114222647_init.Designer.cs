@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(VdDbContext))]
-    [Migration("20240114192828_mig_2")]
-    partial class mig_2
+    [Migration("20240114222647_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,14 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entity.Demand", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DemandNumber")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DemandNumber"));
+
+                    b.Property<int>("DemandId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("DemandType")
                         .HasColumnType("integer");
@@ -40,9 +43,6 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("timestamp with time zone");
@@ -62,20 +62,23 @@ namespace Data.Migrations
                     b.Property<bool>("isActive")
                         .HasColumnType("boolean");
 
-                    b.HasKey("Id");
+                    b.HasKey("DemandNumber");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("DemandId");
+
+                    b.HasIndex("DemandNumber")
+                        .IsUnique();
 
                     b.ToTable("Demand", "dbo");
                 });
 
             modelBuilder.Entity("Data.Entity.Info", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("InfoNumber")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InfoNumber"));
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
@@ -113,9 +116,12 @@ namespace Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.HasKey("Id");
+                    b.HasKey("InfoNumber");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("InfoNumber")
+                        .IsUnique();
 
                     b.HasIndex("Information", "InfoType")
                         .IsUnique();
@@ -125,11 +131,8 @@ namespace Data.Migrations
 
             modelBuilder.Entity("WebAPI.Entity.Employee", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("EmployeeNumber")
                         .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
@@ -139,9 +142,6 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text")
                         .HasDefaultValue("False");
-
-                    b.Property<int>("EmployeeNumber")
-                        .HasColumnType("integer");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -177,7 +177,7 @@ namespace Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
 
-                    b.HasKey("Id");
+                    b.HasKey("EmployeeNumber");
 
                     b.HasIndex("EmployeeNumber")
                         .IsUnique();
@@ -192,7 +192,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("WebAPI.Entity.Employee", "Employee")
                         .WithMany("Demands")
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("DemandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

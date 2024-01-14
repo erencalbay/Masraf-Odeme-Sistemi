@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class mig_2 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,13 +20,11 @@ namespace Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EmployeeNumber = table.Column<int>(type: "integer", nullable: false),
                     IdentityNumber = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     LastName = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false, defaultValue: "False"),
-                    EmployeeNumber = table.Column<int>(type: "integer", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastActivityDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     InsertUserId = table.Column<int>(type: "integer", nullable: false),
@@ -37,7 +35,7 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employee", x => x.Id);
+                    table.PrimaryKey("PK_Employee", x => x.EmployeeNumber);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,9 +43,9 @@ namespace Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    DemandNumber = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EmployeeId = table.Column<int>(type: "integer", nullable: false),
+                    DemandId = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     isActive = table.Column<bool>(type: "boolean", nullable: false),
                     DemandType = table.Column<int>(type: "integer", nullable: false),
@@ -59,13 +57,13 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Demand", x => x.Id);
+                    table.PrimaryKey("PK_Demand", x => x.DemandNumber);
                     table.ForeignKey(
-                        name: "FK_Demand_Employee_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_Demand_Employee_DemandId",
+                        column: x => x.DemandId,
                         principalSchema: "dbo",
                         principalTable: "Employee",
-                        principalColumn: "Id",
+                        principalColumn: "EmployeeNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -74,7 +72,7 @@ namespace Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    InfoNumber = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     EmployeeId = table.Column<int>(type: "integer", nullable: false),
                     IBAN = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
@@ -89,21 +87,28 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Info", x => x.Id);
+                    table.PrimaryKey("PK_Info", x => x.InfoNumber);
                     table.ForeignKey(
                         name: "FK_Info_Employee_EmployeeId",
                         column: x => x.EmployeeId,
                         principalSchema: "dbo",
                         principalTable: "Employee",
-                        principalColumn: "Id",
+                        principalColumn: "EmployeeNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Demand_EmployeeId",
+                name: "IX_Demand_DemandId",
                 schema: "dbo",
                 table: "Demand",
-                column: "EmployeeId");
+                column: "DemandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Demand_DemandNumber",
+                schema: "dbo",
+                table: "Demand",
+                column: "DemandNumber",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_EmployeeNumber",
@@ -124,6 +129,13 @@ namespace Data.Migrations
                 schema: "dbo",
                 table: "Info",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Info_InfoNumber",
+                schema: "dbo",
+                table: "Info",
+                column: "InfoNumber",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Info_Information_InfoType",

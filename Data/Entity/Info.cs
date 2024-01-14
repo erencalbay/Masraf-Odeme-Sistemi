@@ -19,6 +19,7 @@ namespace Data.Entity
         public virtual Employee Employee { get; set; }
         public string IBAN { get; set; }
         public string Information { get; set; }
+        public int InfoNumber { get; set; }
         public string InfoType { get; set; }
         public bool isDefault { get; set; }
     }
@@ -33,6 +34,10 @@ public class InfoConfiguration : IEntityTypeConfiguration<Info>
         builder.Property(x => x.UpdateUserId).IsRequired(false);
         builder.Property(x => x.UpdateDate).IsRequired(false);
 
+
+        builder.Property(x => x.InfoNumber).IsRequired(true);
+        builder.HasKey(x => x.InfoNumber);
+        builder.HasIndex(x => x.InfoNumber).IsUnique(true);
         builder.Property(x => x.EmployeeId).IsRequired(true);
         builder.Property(x => x.IBAN).IsRequired(true).HasMaxLength(30);
         builder.Property(x => x.InfoType).IsRequired(true);

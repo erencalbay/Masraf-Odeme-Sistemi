@@ -33,20 +33,23 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         builder.Property(x => x.UpdateDate).IsRequired(false);
         builder.Property(x => x.isActive).IsRequired(true).HasDefaultValue(true);
 
+
+        builder.Property(x => x.EmployeeNumber).IsRequired(true).ValueGeneratedNever();
+        builder.HasIndex(x => x.EmployeeNumber).IsUnique(true);
+        builder.HasKey(x => x.EmployeeNumber);
         builder.Property(x => x.IdentityNumber).IsRequired(true);
         builder.Property(x => x.FirstName).IsRequired(true).HasMaxLength(30);
         builder.Property(x => x.LastName).IsRequired(true).HasMaxLength(30);
         builder.Property(x => x.Email).IsRequired(true).HasDefaultValue(false);
-        builder.Property(x => x.EmployeeNumber).IsRequired(true);
+        builder.Property(x => x.EmployeeNumber).IsRequired(true).ValueGeneratedNever();
         builder.Property(x => x.DateOfBirth).IsRequired(true);
         builder.Property(x => x.LastActivityDate).IsRequired(true);
 
         builder.HasIndex(x => x.IdentityNumber).IsUnique(true);
-        builder.HasIndex(x => x.EmployeeNumber).IsUnique(true);
 
         builder.HasMany(x => x.Demands)
             .WithOne(x => x.Employee)
-            .HasForeignKey(x => x.EmployeeId)
+            .HasForeignKey(x => x.DemandId)
             .IsRequired(true);
 
         builder.HasMany(x => x.Infos)
