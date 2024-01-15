@@ -1,7 +1,11 @@
-﻿using Data.DbContextCon;
+﻿using Base.Response;
+using Business.CQRS;
+using Data.DbContextCon;
 using Data.Entity;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Schema;
 using WebAPI.Entity;
 
 namespace WebAPI.Controllers
@@ -10,52 +14,51 @@ namespace WebAPI.Controllers
     [ApiController]
     public class DemandControllers : ControllerBase
     {
-        private readonly VdDbContext _dbContext;
-
-        public DemandControllers(VdDbContext dbContext)
+        private readonly IMediator mediator;
+        public DemandControllers(IMediator mediator)
         {
-            _dbContext = dbContext;
+            this.mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<List<Demand>> Get()
+        public async Task<ApiResponse<List<DemandResponse>>> Get()
         {
-            return await _dbContext.Set<Demand>()
-                .ToListAsync();
+            var opr = new GetAllDemandQuery();
+            var result = await mediator.Send(opr);
+            return result;
+
         }
 
         [HttpGet("{id}")]
-        public async Task<Demand> Get(int id)
+        public async Task<ApiResponse<DemandResponse>> Get(int id)
         {
-            var customer = await _dbContext.Set<Demand>()
-                .Where(x => x.DemandNumber == id).FirstOrDefaultAsync();
-
-            return customer;
+            var operation = new GetDemandByIdQuery(id);
+            var result = await mediator.Send(operation);
+            return result;
         }
 
         [HttpPost]
-        public async Task Post([FromBody] Demand demand)
+        public async Task<ApiResponse<DemandResponse>> Post([FromBody] DemandRequest Demand)
         {
-            await _dbContext.Set<Demand>().AddAsync(demand);
-            await _dbContext.SaveChangesAsync();
+            var operation = new CreateDemandCommand(Demand);
+            var result = await mediator.Send(operation);
+            return result;
         }
 
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] Demand demand)
+        public async Task<ApiResponse> Put(int id, [FromBody] DemandRequest Demand)
         {
-            var fromdb = await _dbContext.Set<Demand>().Where(x => x.DemandNumber == id).FirstOrDefaultAsync();
-            fromdb.Description = demand.Description;
-            fromdb.RejectionResponse = demand.RejectionResponse;
-
-            await _dbContext.SaveChangesAsync();
+            var operation = new UpdateDemandCommandFromEmployee(id, Demand);
+            var result = await mediator.Send(operation);
+            return result;
         }
 
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<ApiResponse> Delete(int id)
         {
-            var fromdb = await _dbContext.Set<Demand>().Where(x => x.DemandNumber == id).FirstOrDefaultAsync();
-            fromdb.isActive = false;
-            await _dbContext.SaveChangesAsync();
+            var operation = new DeleteDemandCommand(id);
+            var result = await mediator.Send(operation);
+            return result;
         }
     }
 }

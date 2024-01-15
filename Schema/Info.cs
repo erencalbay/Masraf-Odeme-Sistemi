@@ -13,7 +13,6 @@ public class InfoRequest : BaseRequest
     public bool isDefault { get; set; }
 
 }
-
 public class InfoResponse : BaseResponse
 {
     public int Id { get; set; }

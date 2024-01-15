@@ -1,5 +1,7 @@
 ﻿using Base.Schema;
 using Data.Enum;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,8 @@ namespace Schema
         public string Description { get; set; }
         public bool isDefault { get; set; }
         public int DemandNumber { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
         public DemandType DemandType { get; set; }
         public string RejectionResponse { get; set; }
     }
