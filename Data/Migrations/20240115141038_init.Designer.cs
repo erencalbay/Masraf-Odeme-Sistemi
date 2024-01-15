@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(VdDbContext))]
-    [Migration("20240114222647_init")]
+    [Migration("20240115141038_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -60,6 +60,9 @@ namespace Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<bool>("isActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("isDefault")
                         .HasColumnType("boolean");
 
                     b.HasKey("DemandNumber");

@@ -19,7 +19,7 @@ namespace Data.Entity
         public int DemandId { get; set; }
         public virtual Employee Employee { get; set; }
         public string Description { get; set; }
-        public bool isActive { get; set; }
+        public bool isDefault { get; set; }
         public int DemandNumber { get; set; }
         public DemandType DemandType { get; set; }
         public string RejectionResponse { get; set; }
@@ -41,7 +41,7 @@ public class DemandConfiguration : IEntityTypeConfiguration<Demand>
         builder.HasIndex(x => x.DemandNumber).IsUnique(true);
         builder.Property(x => x.DemandId).IsRequired(true);
         builder.Property(x => x.Description).IsRequired(true).HasMaxLength(1000);
-        builder.Property(x => x.isActive).IsRequired(true);
+        builder.Property(x => x.isDefault).IsRequired(true);
         builder.Property(x => x.DemandType).IsRequired(true);
         builder.Property(x => x.RejectionResponse).IsRequired(false);
     

@@ -47,13 +47,14 @@ namespace Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DemandId = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    isActive = table.Column<bool>(type: "boolean", nullable: false),
+                    isDefault = table.Column<bool>(type: "boolean", nullable: false),
                     DemandType = table.Column<int>(type: "integer", nullable: false),
                     RejectionResponse = table.Column<string>(type: "text", nullable: true),
                     InsertUserId = table.Column<int>(type: "integer", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdateUserId = table.Column<int>(type: "integer", nullable: true),
-                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    isActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {

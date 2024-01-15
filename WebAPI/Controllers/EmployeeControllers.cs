@@ -1,7 +1,11 @@
-﻿using Data.DbContextCon;
+﻿using AutoMapper;
+using Base.Response;
+using Business.CQRS;
+using Data.DbContextCon;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebAPI.Entity;
+using Schema;
 
 namespace WebAPI.Controllers
 {
@@ -9,54 +13,51 @@ namespace WebAPI.Controllers
     [ApiController]
     public class EmployeeControllers : ControllerBase
     {
-        private readonly VdDbContext _dbContext;
-
-        public EmployeeControllers(VdDbContext dbContext)
+        private readonly IMediator mediator;
+        public EmployeeControllers(IMediator mediator)
         {
-            _dbContext = dbContext;
+            this.mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<List<Employee>> Get()
+        public async Task<ApiResponse<List<EmployeeResponse>>> Get()
         {
-            return await _dbContext.Set<Employee>()
-                .ToListAsync();
+            var opr = new GetAllEmployeeQuery();
+            var result = await mediator.Send(opr);
+            return result;
+            
         }
 
         [HttpGet("{id}")]
-        public async Task<Employee> Get(int id)
+        public async Task<ApiResponse<EmployeeResponse>> Get(int id)
         {
-            var customer = await _dbContext.Set<Employee>()
-                .Include(x => x.Demands)
-                .Include(x => x.Infos)
-                .Where(x => x.EmployeeNumber == id).FirstOrDefaultAsync();
-
-            return customer;
+            var operation = new GetEmployeeByIdQuery(id);
+            var result = await mediator.Send(operation);
+            return result;
         }
 
         [HttpPost]
-        public async Task Post([FromBody] Employee employee)
+        public async Task<ApiResponse<EmployeeResponse>> Post([FromBody] EmployeeRequest employee)
         {
-            await _dbContext.Set<Employee>().AddAsync(employee);
-            await _dbContext.SaveChangesAsync();
+            var operation = new CreateEmployeeCommand(employee);
+            var result = await mediator.Send(operation);
+            return result;
         }
 
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] Employee employee)
+        public async Task<ApiResponse> Put(int id, [FromBody] EmployeeRequest employee)
         {
-            var fromdb = await _dbContext.Set<Employee>().Where(x => x.EmployeeNumber == id).FirstOrDefaultAsync();
-            fromdb.FirstName = employee.FirstName;
-            fromdb.LastName = employee.LastName;
-
-            await _dbContext.SaveChangesAsync();
+            var operation = new UpdateEmployeeCommand(id, employee);
+            var result = await mediator.Send(operation);
+            return result;
         }
 
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<ApiResponse> Delete(int id)
         {
-            var fromdb = await _dbContext.Set<Employee>().Where(x => x.EmployeeNumber == id).FirstOrDefaultAsync();
-            fromdb.isActive = false;
-            await _dbContext.SaveChangesAsync();
+            var operation = new DeleteEmployeeCommand(id); 
+            var result = await mediator.Send(operation);
+            return result;
         }
     }
 }

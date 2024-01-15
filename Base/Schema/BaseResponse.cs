@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Base.Schema
+{
+    public abstract class BaseResponse
+    {
+        public DateTime ResponseTime { get; set; } = DateTime.UtcNow;
+    }
+}

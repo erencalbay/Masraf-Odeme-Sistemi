@@ -59,6 +59,9 @@ namespace Data.Migrations
                     b.Property<bool>("isActive")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("isDefault")
+                        .HasColumnType("boolean");
+
                     b.HasKey("DemandNumber");
 
                     b.HasIndex("DemandId");
