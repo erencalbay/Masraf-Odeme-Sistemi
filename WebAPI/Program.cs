@@ -5,12 +5,18 @@ using Data;
 using Data.DbContextCon;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using Business;
+using FluentValidation.AspNetCore;
+using Business.Validator;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddFluentValidation(x =>
+{
+    x.RegisterValidatorsFromAssemblyContaining<CreateEmployeeValidator>();
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -19,7 +25,6 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(VbTra
 
 var mapperConf = new MapperConfiguration(cfg => cfg.AddProfile(new MapperConfig()));
 builder.Services.AddSingleton(mapperConf.CreateMapper());
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
