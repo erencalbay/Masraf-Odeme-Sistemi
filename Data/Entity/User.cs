@@ -7,14 +7,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebAPI.Entity
 {
-    [Table("Employee", Schema = "dbo")]
-    public class Employee : BaseEntity
+    [Table("User", Schema = "dbo")]
+    public class User : BaseEntity
     {
         public string IdentityNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public int EmployeeNumber { get; set; }
+        public int UserNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime LastActivityDate { get; set; }
 
@@ -23,9 +23,9 @@ namespace WebAPI.Entity
         
     }
 }
-public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
+public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<Employee> builder)
+    public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.Property(x => x.InsertDate).IsRequired(true);
         builder.Property(x => x.InsertUserId).IsRequired(true);
@@ -34,27 +34,27 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         builder.Property(x => x.isActive).IsRequired(true).HasDefaultValue(true);
 
 
-        builder.Property(x => x.EmployeeNumber).IsRequired(true).ValueGeneratedNever();
-        builder.HasIndex(x => x.EmployeeNumber).IsUnique(true);
-        builder.HasKey(x => x.EmployeeNumber);
+        builder.Property(x => x.UserNumber).IsRequired(true).ValueGeneratedNever();
+        builder.HasIndex(x => x.UserNumber).IsUnique(true);
+        builder.HasKey(x => x.UserNumber);
         builder.Property(x => x.IdentityNumber).IsRequired(true);
         builder.Property(x => x.FirstName).IsRequired(true).HasMaxLength(30);
         builder.Property(x => x.LastName).IsRequired(true).HasMaxLength(30);
         builder.Property(x => x.Email).IsRequired(true).HasDefaultValue(false);
-        builder.Property(x => x.EmployeeNumber).IsRequired(true).ValueGeneratedNever();
+        builder.Property(x => x.UserNumber).IsRequired(true).ValueGeneratedNever();
         builder.Property(x => x.DateOfBirth).IsRequired(true);
         builder.Property(x => x.LastActivityDate).IsRequired(true);
 
         builder.HasIndex(x => x.IdentityNumber).IsUnique(true);
 
         builder.HasMany(x => x.Demands)
-            .WithOne(x => x.Employee)
+            .WithOne(x => x.User)
             .HasForeignKey(x => x.DemandId)
             .IsRequired(true);
 
         builder.HasMany(x => x.Infos)
-            .WithOne(x => x.Employee)
-            .HasForeignKey(x => x.EmployeeId)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId)
             .IsRequired(true);
     }
 }

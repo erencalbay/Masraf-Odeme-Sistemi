@@ -5,7 +5,7 @@ namespace Schema;
 
 public class InfoRequest : BaseRequest
 {
-    public int EmployeeId { get; set; }
+    public int UserId { get; set; }
     public string IBAN { get; set; }
     public string Information { get; set; }
     public int InfoNumber { get; set; }
@@ -16,7 +16,7 @@ public class InfoRequest : BaseRequest
 public class InfoResponse : BaseResponse
 {
     public int Id { get; set; }
-    public int EmployeeId { get; set; }
+    public int UserId { get; set; }
     public string IBAN { get; set; }
     public string Information { get; set; }
     public int InfoNumber { get; set; }

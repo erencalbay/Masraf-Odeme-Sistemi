@@ -14,8 +14,8 @@ namespace Business.Mapper
     {
         public MapperConfig()
         {
-            CreateMap<EmployeeRequest, Employee>();
-            CreateMap<Employee, EmployeeResponse>();
+            CreateMap<UserRequest, User>();
+            CreateMap<User, UserResponse>();
 
             CreateMap<DemandRequest, Demand>();
             CreateMap<Demand, DemandResponse>();

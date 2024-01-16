@@ -8,7 +8,7 @@ using WebAPI.Entity;
 
 namespace Business.VbTransferCommand
 {
-    public record VbTransferCommand : IRequest<Employee>
+    public record VbTransferCommand : IRequest<User>
     {
 
 

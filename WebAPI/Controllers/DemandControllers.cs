@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ApiResponse> Put(int id, [FromBody] DemandRequest Demand)
         {
-            var operation = new UpdateDemandCommandFromEmployee(id, Demand);
+            var operation = new UpdateDemandCommandFromUser(id, Demand);
             var result = await mediator.Send(operation);
             return result;
         }

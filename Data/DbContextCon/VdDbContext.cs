@@ -19,7 +19,7 @@ namespace Data.DbContextCon
 
         //dbset
 
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Info> Infos { get; set; }
         public DbSet<Demand> Demands { get; set; }
 
@@ -28,7 +28,7 @@ namespace Data.DbContextCon
         {
             modelBuilder.ApplyConfiguration(new DemandConfiguration());
             modelBuilder.ApplyConfiguration(new InfoConfiguration());
-            modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

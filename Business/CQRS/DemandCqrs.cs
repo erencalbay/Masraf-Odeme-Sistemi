@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Business.CQRS
 {
     public record CreateDemandCommand(DemandRequest Model) : IRequest<ApiResponse<DemandResponse>>;
-    public record UpdateDemandCommandFromEmployee(int Id, DemandRequest Model) : IRequest<ApiResponse>;
+    public record UpdateDemandCommandFromUser(int Id, DemandRequest Model) : IRequest<ApiResponse>;
     public record ResponseDemandCommandFromAdmin(int Id, DemandRequest Model) : IRequest<ApiResponse>;
     public record DeleteDemandCommand(int Id) : IRequest<ApiResponse>;
 

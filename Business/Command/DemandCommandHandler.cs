@@ -18,7 +18,7 @@ namespace Business.Command
 {
     public class DemandCommandHandler :
     IRequestHandler<CreateDemandCommand, ApiResponse<DemandResponse>>,
-    IRequestHandler<UpdateDemandCommandFromEmployee, ApiResponse>,
+    IRequestHandler<UpdateDemandCommandFromUser, ApiResponse>,
     IRequestHandler<ResponseDemandCommandFromAdmin, ApiResponse>,
     IRequestHandler<DeleteDemandCommand, ApiResponse>
 
@@ -51,7 +51,7 @@ namespace Business.Command
             return new ApiResponse<DemandResponse>(mapped);
         }
 
-        public async Task<ApiResponse> Handle(UpdateDemandCommandFromEmployee request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(UpdateDemandCommandFromUser request, CancellationToken cancellationToken)
         {
             var fromdb = await dbContext.Set<Demand>().Where(x => x.DemandNumber == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -91,7 +91,7 @@ namespace Business.Command
             {
                 return new ApiResponse("Record Not Found");
             }
-            //dbContext.Set<Employee>().Remove(fromdb);
+            //dbContext.Set<User>().Remove(fromdb);
             fromdb.isActive = false;
             await dbContext.SaveChangesAsync(cancellationToken);
             return new ApiResponse();

@@ -80,7 +80,7 @@ namespace Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InfoNumber"));
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.Property<string>("IBAN")
@@ -118,7 +118,7 @@ namespace Data.Migrations
 
                     b.HasKey("InfoNumber");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("UserId");
 
                     b.HasIndex("InfoNumber")
                         .IsUnique();
@@ -129,9 +129,9 @@ namespace Data.Migrations
                     b.ToTable("Info", "dbo");
                 });
 
-            modelBuilder.Entity("WebAPI.Entity.Employee", b =>
+            modelBuilder.Entity("WebAPI.Entity.User", b =>
                 {
-                    b.Property<int>("EmployeeNumber")
+                    b.Property<int>("UserNumber")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DateOfBirth")
@@ -177,40 +177,40 @@ namespace Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(true);
 
-                    b.HasKey("EmployeeNumber");
+                    b.HasKey("UserNumber");
 
-                    b.HasIndex("EmployeeNumber")
+                    b.HasIndex("UserNumber")
                         .IsUnique();
 
                     b.HasIndex("IdentityNumber")
                         .IsUnique();
 
-                    b.ToTable("Employee", "dbo");
+                    b.ToTable("User", "dbo");
                 });
 
             modelBuilder.Entity("Data.Entity.Demand", b =>
                 {
-                    b.HasOne("WebAPI.Entity.Employee", "Employee")
+                    b.HasOne("WebAPI.Entity.User", "User")
                         .WithMany("Demands")
                         .HasForeignKey("DemandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Employee");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Entity.Info", b =>
                 {
-                    b.HasOne("WebAPI.Entity.Employee", "Employee")
+                    b.HasOne("WebAPI.Entity.User", "User")
                         .WithMany("Infos")
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Employee");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WebAPI.Entity.Employee", b =>
+            modelBuilder.Entity("WebAPI.Entity.User", b =>
                 {
                     b.Navigation("Demands");
 

@@ -76,7 +76,7 @@ namespace Business.Command
             {
                 return new ApiResponse("Record Not Found");
             }
-            //dbContext.Set<Employee>().Remove(fromdb);
+            //dbContext.Set<User>().Remove(fromdb);
             fromdb.isActive = false;
             await dbContext.SaveChangesAsync(cancellationToken);
             return new ApiResponse();

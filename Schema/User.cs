@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Schema
 {
-    public class EmployeeRequest : BaseRequest
+    public class UserRequest : BaseRequest
     {
         [JsonIgnore]
-        public int EmployeeNumber { get; set; }
+        public int UserNumber { get; set; }
         public string IdentityNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -23,13 +23,13 @@ namespace Schema
 
 
     }
-    public class EmployeeResponse : BaseResponse
+    public class UserResponse : BaseResponse
     {
         public string IdentityNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public int EmployeeNumber { get; set; }
+        public int UserNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime LastActivityDate { get; set; }
 

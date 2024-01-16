@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Business.Validator
 {
-    public class CreateEmployeeValidator : AbstractValidator<EmployeeRequest>
+    public class CreateUserValidator : AbstractValidator<UserRequest>
     {
-        public CreateEmployeeValidator()
+        public CreateUserValidator()
         {
             RuleFor(x => x.FirstName).NotEmpty().MaximumLength(30);
             RuleFor(x => x.LastName).NotEmpty().MaximumLength(30);

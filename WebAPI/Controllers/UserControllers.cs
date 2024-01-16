@@ -11,43 +11,43 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeControllers : ControllerBase
+    public class UserControllers : ControllerBase
     {
         private readonly IMediator mediator;
-        public EmployeeControllers(IMediator mediator)
+        public UserControllers(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<ApiResponse<List<EmployeeResponse>>> Get()
+        public async Task<ApiResponse<List<UserResponse>>> Get()
         {
-            var opr = new GetAllEmployeeQuery();
+            var opr = new GetAllUserQuery();
             var result = await mediator.Send(opr);
             return result;
             
         }
 
         [HttpGet("{id}")]
-        public async Task<ApiResponse<EmployeeResponse>> Get(int id)
+        public async Task<ApiResponse<UserResponse>> Get(int id)
         {
-            var operation = new GetEmployeeByIdQuery(id);
+            var operation = new GetUserByIdQuery(id);
             var result = await mediator.Send(operation);
             return result;
         }
 
         [HttpPost]
-        public async Task<ApiResponse<EmployeeResponse>> Post([FromBody] EmployeeRequest employee)
+        public async Task<ApiResponse<UserResponse>> Post([FromBody] UserRequest user)
         {
-            var operation = new CreateEmployeeCommand(employee);
+            var operation = new CreateUserCommand(user);
             var result = await mediator.Send(operation);
             return result;
         }
 
         [HttpPut("{id}")]
-        public async Task<ApiResponse> Put(int id, [FromBody] EmployeeRequest employee)
+        public async Task<ApiResponse> Put(int id, [FromBody] UserRequest user)
         {
-            var operation = new UpdateEmployeeCommand(id, employee);
+            var operation = new UpdateUserCommand(id, user);
             var result = await mediator.Send(operation);
             return result;
         }
@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ApiResponse> Delete(int id)
         {
-            var operation = new DeleteEmployeeCommand(id); 
+            var operation = new DeleteUserCommand(id); 
             var result = await mediator.Send(operation);
             return result;
         }

@@ -16,11 +16,11 @@ namespace Data.Migrations
                 name: "dbo");
 
             migrationBuilder.CreateTable(
-                name: "Employee",
+                name: "User",
                 schema: "dbo",
                 columns: table => new
                 {
-                    EmployeeNumber = table.Column<int>(type: "integer", nullable: false),
+                    UserNumber = table.Column<int>(type: "integer", nullable: false),
                     IdentityNumber = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     LastName = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
@@ -35,7 +35,7 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employee", x => x.EmployeeNumber);
+                    table.PrimaryKey("PK_User", x => x.UserNumber);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,11 +60,11 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_Demand", x => x.DemandNumber);
                     table.ForeignKey(
-                        name: "FK_Demand_Employee_DemandId",
+                        name: "FK_Demand_User_DemandId",
                         column: x => x.DemandId,
                         principalSchema: "dbo",
-                        principalTable: "Employee",
-                        principalColumn: "EmployeeNumber",
+                        principalTable: "User",
+                        principalColumn: "UserNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -75,7 +75,7 @@ namespace Data.Migrations
                 {
                     InfoNumber = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EmployeeId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
                     IBAN = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Information = table.Column<string>(type: "text", nullable: false),
                     InfoType = table.Column<string>(type: "text", nullable: false),
@@ -90,11 +90,11 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_Info", x => x.InfoNumber);
                     table.ForeignKey(
-                        name: "FK_Info_Employee_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_Info_User_UserId",
+                        column: x => x.UserId,
                         principalSchema: "dbo",
-                        principalTable: "Employee",
-                        principalColumn: "EmployeeNumber",
+                        principalTable: "User",
+                        principalColumn: "UserNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -112,24 +112,24 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_EmployeeNumber",
+                name: "IX_User_UserNumber",
                 schema: "dbo",
-                table: "Employee",
-                column: "EmployeeNumber",
+                table: "User",
+                column: "UserNumber",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_IdentityNumber",
+                name: "IX_User_IdentityNumber",
                 schema: "dbo",
-                table: "Employee",
+                table: "User",
                 column: "IdentityNumber",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Info_EmployeeId",
+                name: "IX_Info_UserId",
                 schema: "dbo",
                 table: "Info",
-                column: "EmployeeId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Info_InfoNumber",
@@ -158,7 +158,7 @@ namespace Data.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Employee",
+                name: "User",
                 schema: "dbo");
         }
     }

@@ -14,43 +14,43 @@ using WebAPI.Entity;
 
 namespace Business.Command
 {
-    public class EmployeeCommandHandler :
-    IRequestHandler<CreateEmployeeCommand, ApiResponse<EmployeeResponse>>,
-    IRequestHandler<UpdateEmployeeCommand, ApiResponse>,
-    IRequestHandler<DeleteEmployeeCommand, ApiResponse>
+    public class UserCommandHandler :
+    IRequestHandler<CreateUserCommand, ApiResponse<UserResponse>>,
+    IRequestHandler<UpdateUserCommand, ApiResponse>,
+    IRequestHandler<DeleteUserCommand, ApiResponse>
 
     {
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
 
-        public EmployeeCommandHandler(VdDbContext dbContext, IMapper mapper)
+        public UserCommandHandler(VdDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
         }
 
-        public async Task<ApiResponse<EmployeeResponse>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var checkId = await dbContext.Set<Employee>().Where(x => x.IdentityNumber == request.Model.IdentityNumber)
+            var checkId = await dbContext.Set<User>().Where(x => x.IdentityNumber == request.Model.IdentityNumber)
             .FirstOrDefaultAsync(cancellationToken);
 
             if(checkId != null)
             {
-                return new ApiResponse<EmployeeResponse>($"{request.Model.IdentityNumber} is used by another employee.");
+                return new ApiResponse<UserResponse>($"{request.Model.IdentityNumber} is used by another user.");
             }
-            var entity = mapper.Map<EmployeeRequest, Employee>(request.Model);
-            entity.EmployeeNumber = new Random().Next(100000, 999999);
+            var entity = mapper.Map<UserRequest, User>(request.Model);
+            entity.UserNumber = new Random().Next(100000, 999999);
 
             var entityResult = await dbContext.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
-            var mapped = mapper.Map<Employee, EmployeeResponse>(entityResult.Entity);
+            var mapped = mapper.Map<User, UserResponse>(entityResult.Entity);
 
-            return new ApiResponse<EmployeeResponse>(mapped);
+            return new ApiResponse<UserResponse>(mapped);
         }
 
-        public async Task<ApiResponse> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var fromdb = await dbContext.Set<Employee>().Where(x => x.EmployeeNumber == request.Id)
+            var fromdb = await dbContext.Set<User>().Where(x => x.UserNumber == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if(fromdb == null)
@@ -64,15 +64,15 @@ namespace Business.Command
             return new ApiResponse();
         }
 
-        public async Task<ApiResponse> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var fromdb = await dbContext.Set<Employee>().Where(x => x.EmployeeNumber == request.Id)
+            var fromdb = await dbContext.Set<User>().Where(x => x.UserNumber == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
             {
                 return new ApiResponse("Record Not Found");
             }
-            //dbContext.Set<Employee>().Remove(fromdb);
+            //dbContext.Set<User>().Remove(fromdb);
             fromdb.isActive = false;
             await dbContext.SaveChangesAsync(cancellationToken);
             return new ApiResponse();
