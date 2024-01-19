@@ -20,12 +20,18 @@ namespace WebAPI.Controllers
         {
             this.mediator = mediator;
         }
-
         // ADMİN KULLANACAK VE TÜM TALEPLERİ GÖRECEK
         [HttpGet]
-        public async Task<ApiResponse<List<DemandResponse>>> Get()
+        public async Task<ApiResponse<List<DemandResponse>>> GetAllActiveDemand()
         {
             var opr = new GetAllDemandQuery();
+            var result = await mediator.Send(opr);
+            return result;
+        }
+        [HttpGet]
+        public async Task<ApiResponse<List<DemandResponse>>> GetAllNotActiveDemand()
+        {
+            var opr = new GetAllNotActiveDemandQuery();
             var result = await mediator.Send(opr);
             return result;
         }
@@ -38,7 +44,6 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(opr);
             return result;
         }
-
         // ADMİN KULLANACAK VE TÜM TALEPLERİ GÖRECEK DEMAND ID İLE
         [HttpGet("{id}")]
         public async Task<ApiResponse<DemandResponse>> Get(int id)
@@ -55,8 +60,6 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(operation);
             return result;
         }
-
-
         // ADMİN KULLANACAK ve cevap verecek
         [HttpPut("{id}")]
         public async Task<ApiResponse> ExpenseResponseFromAdmin(int id, [FromBody] DemandRequestFromAdmin Demand)
@@ -65,7 +68,6 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(operation);
             return result;
         }
-
         // ADMİN KULLANACAK
         [HttpDelete("{id}")]
         public async Task<ApiResponse> Delete(int id)

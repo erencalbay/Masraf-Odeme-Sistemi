@@ -43,7 +43,7 @@ namespace Business.Command
             {
                 Handle(request, cancellationToken);
             }
-            //var receipt = await FileUploadService.WriteFile(request.Model.Receipt);
+            var receipt = await FileUploadService.WriteFile(request.Model.Receipt);
             var entity = mapper.Map<DemandRequest, Demand>(request.Model);
             entity.isDefault = true;
             entity.DemandNumber = demandNumber;
@@ -85,6 +85,7 @@ namespace Business.Command
 
             fromdb.RejectionResponse = request.Model.RejectionResponse;
             fromdb.DemandType = request.Model.DemandType;
+            fromdb.isActive = false;
 
             // todo: eğer demandtype approval ise if durumuyla eft yollanacak
 

@@ -19,7 +19,8 @@ namespace Business.Query
     IRequestHandler<GetAllDemandQuery, ApiResponse<List<DemandResponse>>>,
     IRequestHandler<GetDemandByIdQuery, ApiResponse<DemandResponse>>,
     IRequestHandler<GetDemandByParameterQuery, ApiResponse<List<DemandResponse>>>,
-    IRequestHandler<GetEmployeeDemandQuery, ApiResponse<List<DemandResponse>>>
+    IRequestHandler<GetEmployeeDemandQuery, ApiResponse<List<DemandResponse>>>,
+    IRequestHandler<GetAllNotActiveDemandQuery, ApiResponse<List<DemandResponse>>>
     {
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
@@ -34,6 +35,15 @@ namespace Business.Query
         {
             var list = await dbContext.Set<Demand>()
                 .Where(x => x.isActive == true)
+                .ToListAsync(cancellationToken);
+            var mappedList = mapper.Map<List<Demand>, List<DemandResponse>>(list);
+            return new ApiResponse<List<DemandResponse>>(mappedList);
+        }
+
+        public async Task<ApiResponse<List<DemandResponse>>> Handle(GetAllNotActiveDemandQuery request, CancellationToken cancellationToken)
+        {
+            var list = await dbContext.Set<Demand>()
+                .Where(x => x.isActive == false)
                 .ToListAsync(cancellationToken);
             var mappedList = mapper.Map<List<Demand>, List<DemandResponse>>(list);
             return new ApiResponse<List<DemandResponse>>(mappedList);
