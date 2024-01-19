@@ -42,7 +42,8 @@ namespace Business.Query
         public async Task<ApiResponse<DemandResponse>> Handle(GetDemandByIdQuery request, CancellationToken cancellationToken)
         {
             var entity = await dbContext.Set<Demand>()
-                .FirstOrDefaultAsync(x => x.DemandNumber == request.Id, cancellationToken);
+                //to do DemandNumber olacak.
+                .FirstOrDefaultAsync(x => x.DemandId == request.Id, cancellationToken);
             var mapped = mapper.Map<Demand, DemandResponse>(entity);
             return new ApiResponse<DemandResponse>(mapped);
         }

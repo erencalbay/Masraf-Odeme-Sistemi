@@ -43,7 +43,7 @@ namespace Business.Command
             {
                 Handle(request, cancellationToken);
             }
-            var receipt = await FileUploadService.WriteFile(request.Model.Receipt);
+            //var receipt = await FileUploadService.WriteFile(request.Model.Receipt);
             var entity = mapper.Map<DemandRequest, Demand>(request.Model);
             entity.isDefault = true;
             entity.DemandNumber = demandNumber;

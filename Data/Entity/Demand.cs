@@ -22,7 +22,7 @@ namespace Data.Entity
         public virtual User User { get; set; }
         public string Description { get; set; }
         public bool isDefault { get; set; }
-        public IFormFile Receipt { get; set; }
+        //public IFormFile Receipt { get; set; }
         public int DemandNumber { get; set; }
         public DemandType DemandType { get; set; }
         public string RejectionResponse { get; set; }
@@ -39,7 +39,7 @@ public class DemandConfiguration : IEntityTypeConfiguration<Demand>
         builder.Property(x => x.UpdateDate).IsRequired(false);
         
 
-        builder.Property(x => x.Receipt).IsRequired(false);
+        //builder.Property(x => x.Receipt).IsRequired(false);
         builder.Property(x => x.DemandId).IsRequired(true);
         builder.HasKey(x => x.DemandId);
         builder.HasIndex(x => x.DemandId).IsUnique(true);
