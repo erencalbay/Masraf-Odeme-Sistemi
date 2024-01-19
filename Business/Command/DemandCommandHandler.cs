@@ -45,7 +45,6 @@ namespace Business.Command
             }
             var receipt = await FileUploadService.WriteFile(request.Model.Receipt);
             var entity = mapper.Map<DemandRequest, Demand>(request.Model);
-            entity.isDefault = true;
             entity.DemandNumber = demandNumber;
             entity.DemandType = DemandType.Pending;
             //entity.Receipt = receipt;
