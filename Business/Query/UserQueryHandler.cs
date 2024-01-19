@@ -33,6 +33,7 @@ namespace Business.Query
             var list = await dbContext.Set<User>()
                 .Include(x => x.Infos)
                 .Include(x => x.Demands)
+                .Where(x => x.isActive == true)
                 .ToListAsync(cancellationToken);
             var mappedList = mapper.Map<List<User>, List<UserResponse>>(list);
             return new ApiResponse<List<UserResponse>>(mappedList);

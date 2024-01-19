@@ -27,9 +27,9 @@ namespace Data.Migrations
                     Email = table.Column<string>(type: "text", nullable: false, defaultValue: "False"),
                     DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastActivityDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    InsertUserId = table.Column<int>(type: "integer", nullable: false),
+                    InsertUserNumber = table.Column<int>(type: "integer", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdateUserId = table.Column<int>(type: "integer", nullable: true),
+                    UpdateUserNumber = table.Column<int>(type: "integer", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     isActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
                 },
@@ -43,25 +43,26 @@ namespace Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    DemandNumber = table.Column<int>(type: "integer", nullable: false)
+                    DemandId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DemandId = table.Column<int>(type: "integer", nullable: false),
+                    UserNumber = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     isDefault = table.Column<bool>(type: "boolean", nullable: false),
+                    DemandNumber = table.Column<int>(type: "integer", nullable: false),
                     DemandType = table.Column<int>(type: "integer", nullable: false),
                     RejectionResponse = table.Column<string>(type: "text", nullable: true),
-                    InsertUserId = table.Column<int>(type: "integer", nullable: false),
+                    InsertUserNumber = table.Column<int>(type: "integer", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdateUserId = table.Column<int>(type: "integer", nullable: true),
+                    UpdateUserNumber = table.Column<int>(type: "integer", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    isActive = table.Column<bool>(type: "boolean", nullable: false)
+                    isActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Demand", x => x.DemandNumber);
+                    table.PrimaryKey("PK_Demand", x => x.DemandId);
                     table.ForeignKey(
-                        name: "FK_Demand_User_DemandId",
-                        column: x => x.DemandId,
+                        name: "FK_Demand_User_UserNumber",
+                        column: x => x.UserNumber,
                         principalSchema: "dbo",
                         principalTable: "User",
                         principalColumn: "UserNumber",
@@ -73,25 +74,26 @@ namespace Data.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    InfoNumber = table.Column<int>(type: "integer", nullable: false)
+                    InfoId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    UserNumber = table.Column<int>(type: "integer", nullable: false),
                     IBAN = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Information = table.Column<string>(type: "text", nullable: false),
+                    InfoNumber = table.Column<int>(type: "integer", nullable: false),
                     InfoType = table.Column<string>(type: "text", nullable: false),
                     isDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    InsertUserId = table.Column<int>(type: "integer", nullable: false),
+                    InsertUserNumber = table.Column<int>(type: "integer", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdateUserId = table.Column<int>(type: "integer", nullable: true),
+                    UpdateUserNumber = table.Column<int>(type: "integer", nullable: true),
                     UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     isActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Info", x => x.InfoNumber);
+                    table.PrimaryKey("PK_Info", x => x.InfoId);
                     table.ForeignKey(
-                        name: "FK_Info_User_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Info_User_UserNumber",
+                        column: x => x.UserNumber,
                         principalSchema: "dbo",
                         principalTable: "User",
                         principalColumn: "UserNumber",
@@ -102,21 +104,34 @@ namespace Data.Migrations
                 name: "IX_Demand_DemandId",
                 schema: "dbo",
                 table: "Demand",
-                column: "DemandId");
+                column: "DemandId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Demand_DemandNumber",
+                name: "IX_Demand_UserNumber",
                 schema: "dbo",
                 table: "Demand",
-                column: "DemandNumber",
+                column: "UserNumber");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Info_InfoId",
+                schema: "dbo",
+                table: "Info",
+                column: "InfoId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_UserNumber",
+                name: "IX_Info_Information_InfoType_InfoNumber",
                 schema: "dbo",
-                table: "User",
-                column: "UserNumber",
+                table: "Info",
+                columns: new[] { "Information", "InfoType", "InfoNumber" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Info_UserNumber",
+                schema: "dbo",
+                table: "Info",
+                column: "UserNumber");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_IdentityNumber",
@@ -126,23 +141,10 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Info_UserId",
+                name: "IX_User_UserNumber",
                 schema: "dbo",
-                table: "Info",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Info_InfoNumber",
-                schema: "dbo",
-                table: "Info",
-                column: "InfoNumber",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Info_Information_InfoType",
-                schema: "dbo",
-                table: "Info",
-                columns: new[] { "Information", "InfoType" },
+                table: "User",
+                column: "UserNumber",
                 unique: true);
         }
 

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(VdDbContext))]
-    [Migration("20240115141038_init")]
+    [Migration("20240117105649_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -27,13 +27,13 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entity.Demand", b =>
                 {
-                    b.Property<int>("DemandNumber")
+                    b.Property<int>("DemandId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DemandNumber"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DemandId"));
 
-                    b.Property<int>("DemandId")
+                    b.Property<int>("DemandNumber")
                         .HasColumnType("integer");
 
                     b.Property<int>("DemandType")
@@ -47,7 +47,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("InsertUserId")
+                    b.Property<int>("InsertUserNumber")
                         .HasColumnType("integer");
 
                     b.Property<string>("RejectionResponse")
@@ -56,40 +56,45 @@ namespace Data.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("UpdateUserId")
+                    b.Property<int?>("UpdateUserNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserNumber")
                         .HasColumnType("integer");
 
                     b.Property<bool>("isActive")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("isDefault")
                         .HasColumnType("boolean");
 
-                    b.HasKey("DemandNumber");
+                    b.HasKey("DemandId");
 
-                    b.HasIndex("DemandId");
-
-                    b.HasIndex("DemandNumber")
+                    b.HasIndex("DemandId")
                         .IsUnique();
+
+                    b.HasIndex("UserNumber");
 
                     b.ToTable("Demand", "dbo");
                 });
 
             modelBuilder.Entity("Data.Entity.Info", b =>
                 {
-                    b.Property<int>("InfoNumber")
+                    b.Property<int>("InfoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InfoNumber"));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InfoId"));
 
                     b.Property<string>("IBAN")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
+
+                    b.Property<int>("InfoNumber")
+                        .HasColumnType("integer");
 
                     b.Property<string>("InfoType")
                         .IsRequired()
@@ -102,13 +107,16 @@ namespace Data.Migrations
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("InsertUserId")
+                    b.Property<int>("InsertUserNumber")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("UpdateUserId")
+                    b.Property<int?>("UpdateUserNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserNumber")
                         .HasColumnType("integer");
 
                     b.Property<bool>("isActive")
@@ -119,14 +127,14 @@ namespace Data.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.HasKey("InfoNumber");
+                    b.HasKey("InfoId");
 
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("InfoNumber")
+                    b.HasIndex("InfoId")
                         .IsUnique();
 
-                    b.HasIndex("Information", "InfoType")
+                    b.HasIndex("UserNumber");
+
+                    b.HasIndex("Information", "InfoType", "InfoNumber")
                         .IsUnique();
 
                     b.ToTable("Info", "dbo");
@@ -158,7 +166,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("InsertUserId")
+                    b.Property<int>("InsertUserNumber")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("LastActivityDate")
@@ -172,7 +180,7 @@ namespace Data.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("UpdateUserId")
+                    b.Property<int?>("UpdateUserNumber")
                         .HasColumnType("integer");
 
                     b.Property<bool>("isActive")
@@ -182,10 +190,10 @@ namespace Data.Migrations
 
                     b.HasKey("UserNumber");
 
-                    b.HasIndex("UserNumber")
+                    b.HasIndex("IdentityNumber")
                         .IsUnique();
 
-                    b.HasIndex("IdentityNumber")
+                    b.HasIndex("UserNumber")
                         .IsUnique();
 
                     b.ToTable("User", "dbo");
@@ -195,7 +203,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("WebAPI.Entity.User", "User")
                         .WithMany("Demands")
-                        .HasForeignKey("DemandId")
+                        .HasForeignKey("UserNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -206,7 +214,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("WebAPI.Entity.User", "User")
                         .WithMany("Infos")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

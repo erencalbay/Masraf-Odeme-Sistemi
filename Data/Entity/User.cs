@@ -20,7 +20,6 @@ namespace WebAPI.Entity
 
         public virtual List<Info> Infos { get; set; }
         public virtual List<Demand> Demands { get; set; }
-        
     }
 }
 public class UserConfiguration : IEntityTypeConfiguration<User>
@@ -28,8 +27,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.Property(x => x.InsertDate).IsRequired(true);
-        builder.Property(x => x.InsertUserId).IsRequired(true);
-        builder.Property(x => x.UpdateUserId).IsRequired(false);
+        builder.Property(x => x.InsertUserNumber).IsRequired(true);
+        builder.Property(x => x.UpdateUserNumber).IsRequired(false);
         builder.Property(x => x.UpdateDate).IsRequired(false);
         builder.Property(x => x.isActive).IsRequired(true).HasDefaultValue(true);
 
@@ -49,12 +48,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasMany(x => x.Demands)
             .WithOne(x => x.User)
-            .HasForeignKey(x => x.DemandId)
+            .HasForeignKey(x => x.UserNumber)
             .IsRequired(true);
 
         builder.HasMany(x => x.Infos)
             .WithOne(x => x.User)
-            .HasForeignKey(x => x.UserId)
+            .HasForeignKey(x => x.UserNumber)
             .IsRequired(true);
     }
 }

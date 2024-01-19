@@ -12,8 +12,6 @@ namespace Business.Validator
     {
         public DemandValidator()
         {
-            RuleFor(x => x.DemandType).IsInEnum();
-            RuleFor(x => x.DemandNumber).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
         }
     }

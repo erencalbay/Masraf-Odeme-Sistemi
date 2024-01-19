@@ -18,7 +18,8 @@ namespace Business.Query
     public class DemandQueryHandler :
     IRequestHandler<GetAllDemandQuery, ApiResponse<List<DemandResponse>>>,
     IRequestHandler<GetDemandByIdQuery, ApiResponse<DemandResponse>>,
-    IRequestHandler<GetDemandByParameterQuery, ApiResponse<List<DemandResponse>>>
+    IRequestHandler<GetDemandByParameterQuery, ApiResponse<List<DemandResponse>>>,
+    IRequestHandler<GetEmployeeDemandQuery, ApiResponse<List<DemandResponse>>>
     {
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
@@ -32,6 +33,7 @@ namespace Business.Query
         public async Task<ApiResponse<List<DemandResponse>>> Handle(GetAllDemandQuery request, CancellationToken cancellationToken)
         {
             var list = await dbContext.Set<Demand>()
+                .Where(x => x.isActive == true)
                 .ToListAsync(cancellationToken);
             var mappedList = mapper.Map<List<Demand>, List<DemandResponse>>(list);
             return new ApiResponse<List<DemandResponse>>(mappedList);
@@ -45,6 +47,7 @@ namespace Business.Query
             return new ApiResponse<DemandResponse>(mapped);
         }
 
+        //personel taleplerini filtrelemeli
         public async Task<ApiResponse<List<DemandResponse>>> Handle(GetDemandByParameterQuery request, CancellationToken cancellationToken)
         {
             var list = await dbContext.Set<Demand>()
@@ -55,6 +58,16 @@ namespace Business.Query
                 ).ToListAsync(cancellationToken);
             var mappedList = mapper.Map<List<Demand>, List<DemandResponse>>(list);
             return new ApiResponse<List<DemandResponse>>(mappedList);
+        }
+
+        public async Task<ApiResponse<List<DemandResponse>>> Handle(GetEmployeeDemandQuery request, CancellationToken cancellationToken)
+        {
+            var list = await dbContext.Set<Demand>()
+                .Where(x => x.User.UserNumber == request.UserNumber).ToListAsync(cancellationToken);
+
+            var mappedList = mapper.Map<List<Demand>, List<DemandResponse>>(list);
+            return new ApiResponse<List<DemandResponse>>(mappedList);
+                
         }
     }
 }

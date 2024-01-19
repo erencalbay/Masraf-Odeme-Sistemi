@@ -1,5 +1,6 @@
 ﻿using Base.Schema;
 using Data.Enum;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Newtonsoft.Json.Converters;
 using System;
@@ -14,22 +15,35 @@ namespace Schema
 {
     public class DemandRequest : BaseRequest
     {
-        public int DemandId { get; set; }
+        public int UserNumber { get; set; }
         public string Description { get; set; }
-        public bool isDefault { get; set; }
-        public int DemandNumber { get; set; }
-
-        [JsonConverter(typeof(StringEnumConverter))]
-        public DemandType DemandType { get; set; }
-        public string RejectionResponse { get; set; }
+        //receipt? IFormFile
+        public IFormFile Receipt { get; set; }
     }
     public class DemandResponse : BaseResponse
     {
-        public int Id { get; set; }
         public int DemandId { get; set; }
+        public int UserNumber { get; set; }
         public string Description { get; set; }
-        public bool isDefault { get; set; }
         public int DemandNumber { get; set; }
+        public IFormFile Receipt { get; set; }
+        public DemandType DemandType { get; set; }
+        public string RejectionResponse { get; set; }
+    }
+    public class DemandRequestFromAdmin : BaseRequest
+    {
+        public int UserNumber { get; set; }
+        public DemandType DemandType { get; set; }
+        public string RejectionResponse { get; set; }
+    }
+
+    public class DemandResponseForAdmin : BaseResponse
+    {
+        public int DemandId { get; set; }
+        public int UserNumber { get; set; }
+        public string Description { get; set; }
+        public int DemandNumber { get; set; }
+        public IFormFile Receipt { get; set; }
         public DemandType DemandType { get; set; }
         public string RejectionResponse { get; set; }
     }

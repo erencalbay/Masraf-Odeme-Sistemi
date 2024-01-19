@@ -20,6 +20,9 @@ namespace Business.Mapper
             CreateMap<DemandRequest, Demand>();
             CreateMap<Demand, DemandResponse>();
 
+            CreateMap<DemandRequestFromAdmin, Demand>();
+            CreateMap<Demand, DemandResponseForAdmin>();
+
             CreateMap<InfoRequest, Info>();
             CreateMap<Info, InfoResponse>();
         }

@@ -32,15 +32,19 @@ namespace Business.Command
 
         public async Task<ApiResponse<InfoResponse>> Handle(CreateInfoCommand request, CancellationToken cancellationToken)
         {
-            var checkId = await dbContext.Set<Info>().Where(x => x.InfoNumber == request.Model.InfoNumber)
+            
+            var entity = mapper.Map<InfoRequest, Info>(request.Model);
+
+            var infoNumber = new Random().Next(1000000, 9999999);
+            var checkInfoNumber = await dbContext.Set<Info>().Where(x => x.InfoNumber == infoNumber)
             .FirstOrDefaultAsync(cancellationToken);
 
-            if (checkId != null)
+            if (checkInfoNumber != null)
             {
-                return new ApiResponse<InfoResponse>($"{request.Model.InfoNumber} is exist.");
+                Handle(request, cancellationToken);
             }
-            var entity = mapper.Map<InfoRequest, Info>(request.Model);
-            entity.InfoNumber = new Random().Next(1000000, 9999999);
+
+            //entity.InfoNumber = infoNumber;
 
             var entityResult = await dbContext.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);

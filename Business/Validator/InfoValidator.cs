@@ -13,7 +13,6 @@ namespace Business.Validator
         public InfoValidator()
         {
             RuleFor(x => x.InfoType).NotEmpty();
-            RuleFor(x => x.InfoNumber).NotEmpty();
             RuleFor(x => x.Information).NotEmpty();
         }
     }

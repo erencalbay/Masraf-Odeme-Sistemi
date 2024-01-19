@@ -20,8 +20,6 @@ namespace Schema
         public DateTime DateOfBirth { get; set; }
         public virtual List<InfoRequest> Infos { get; set; }
         public virtual List<DemandRequest> Demands { get; set; }
-
-
     }
     public class UserResponse : BaseResponse
     {

@@ -1,60 +1,65 @@
-﻿using Data.DbContextCon;
+﻿using Base.Response;
+using Business.CQRS;
+using Data.DbContextCon;
 using Data.Entity;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Schema;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class InfoControllers : ControllerBase
     {
-        private readonly VdDbContext _dbContext;
+        private readonly IMediator mediator;
 
-        public InfoControllers(VdDbContext dbContext)
+        public InfoControllers(IMediator mediator)
         {
-            _dbContext = dbContext;
+            this.mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<List<Info>> Get()
+        public async Task<ApiResponse<List<InfoResponse>>> Get()
         {
-            return await _dbContext.Set<Info>()
-                .ToListAsync();
+            var opr = new GetAllInfoQuery();
+            var result = await mediator.Send(opr);
+            return result;
         }
 
         [HttpGet("{id}")]
-        public async Task<Info> Get(int id)
+        public async Task<ApiResponse<InfoResponse>> Get(int id)
         {
-            var customer = await _dbContext.Set<Info>()
-                .Where(x => x.InfoNumber == id).FirstOrDefaultAsync();
-
-            return customer;
+            var operation = new GetInfoByIdQuery(id);
+            var result = await mediator.Send(operation);
+            return result;
         }
 
+        //PERSONEL DEĞİŞTİRECEK     
         [HttpPost]
-        public async Task Post([FromBody] Info info)
+        public async Task<ApiResponse<InfoResponse>> Post([FromBody] InfoRequest info)
         {
-            await _dbContext.Set<Info>().AddAsync(info);
-            await _dbContext.SaveChangesAsync();
+            var operation = new CreateInfoCommand(info);
+            var result = await mediator.Send(operation);
+            return result;
         }
+        //PERSONEL DEĞİŞTİRECEK
 
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] Info info)
+        public async Task<ApiResponse> Put(int id, [FromBody] InfoRequest info)
         {
-            var fromdb = await _dbContext.Set<Info>().Where(x => x.InfoNumber == id).FirstOrDefaultAsync();
-            fromdb.IBAN = info.IBAN;
-            fromdb.Information = info.Information;
-
-            await _dbContext.SaveChangesAsync();
+            var operation = new UpdateInfoCommand(id, info);
+            var result = await mediator.Send(operation);
+            return result;
         }
 
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<ApiResponse> Delete(int id)
         {
-            var fromdb = await _dbContext.Set<Info>().Where(x => x.InfoNumber == id).FirstOrDefaultAsync();
-            fromdb.isActive = false;
-            await _dbContext.SaveChangesAsync();
+            var operation = new DeleteInfoCommand(id);
+            var result = await mediator.Send(operation);
+            return result;
         }
     }
 }

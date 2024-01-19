@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Base.Response;
 using Business.CQRS;
+using Business.Services.FileUploadService;
 using Data.DbContextCon;
 using Data.Entity;
 using Data.Enum;
@@ -34,15 +35,20 @@ namespace Business.Command
 
         public async Task<ApiResponse<DemandResponse>> Handle(CreateDemandCommand request, CancellationToken cancellationToken)
         {
-            var checkId = await dbContext.Set<Demand>().Where(x => x.DemandId == request.Model.DemandId)
+            var demandNumber = new Random().Next(1000000, 9999999);
+            var checkDemandNumber = await dbContext.Set<Demand>().Where(x => x.DemandNumber == demandNumber)
             .FirstOrDefaultAsync(cancellationToken);
 
-            if (checkId != null)
+            if (checkDemandNumber != null)
             {
-                return new ApiResponse<DemandResponse>($"{request.Model.DemandId} is exist.");
+                Handle(request, cancellationToken);
             }
+            var receipt = await FileUploadService.WriteFile(request.Model.Receipt);
             var entity = mapper.Map<DemandRequest, Demand>(request.Model);
-            entity.DemandNumber = new Random().Next(1000000, 9999999);
+            entity.isDefault = true;
+            entity.DemandNumber = demandNumber;
+            entity.DemandType = DemandType.Pending;
+            //entity.Receipt = receipt;
 
             var entityResult = await dbContext.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
@@ -79,6 +85,9 @@ namespace Business.Command
 
             fromdb.RejectionResponse = request.Model.RejectionResponse;
             fromdb.DemandType = request.Model.DemandType;
+
+            // todo: eğer demandtype approval ise if durumuyla eft yollanacak
+
             await dbContext.SaveChangesAsync(cancellationToken);
             return new ApiResponse();
         }

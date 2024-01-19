@@ -36,8 +36,9 @@ namespace WebAPI.Controllers
             return result;
         }
 
+        // BURALARI SADECE ADMİN KULLANACAK VE PERSONEL OLUŞTURACAK
         [HttpPost]
-        public async Task<ApiResponse<UserResponse>> Post([FromBody] UserRequest user)
+        public async Task<ApiResponse<UserResponse>> CreatePersonel([FromBody] UserRequest user)
         {
             var operation = new CreateUserCommand(user);
             var result = await mediator.Send(operation);
