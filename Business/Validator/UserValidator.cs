@@ -18,11 +18,6 @@ namespace Business.Validator
             RuleFor(x => x.Email).EmailAddress().MaximumLength(50);
             RuleFor(x => x.DateOfBirth).NotEmpty();
             RuleFor(x => x.IdentityNumber).NotEmpty().MaximumLength(11);
-
-            RuleFor(x => x.Infos).ForEach(x =>
-            {
-                //x.SetValidator(new CreateInfosValidator());
-            });
         }
     }
 }

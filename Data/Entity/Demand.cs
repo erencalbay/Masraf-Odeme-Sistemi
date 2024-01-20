@@ -14,7 +14,7 @@ using WebAPI.Entity;
 
 namespace Data.Entity
 {
-    [Table("Demand", Schema = "dbo")]
+    [Table("Demand")]
     public class Demand : BaseEntity
     {
         public int DemandId { get; set; }

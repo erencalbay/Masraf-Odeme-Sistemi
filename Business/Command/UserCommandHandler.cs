@@ -2,7 +2,9 @@
 using Base.Response;
 using Business.CQRS;
 using Data.DbContextCon;
+using Data.Entity;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Schema;
 using System;
@@ -23,6 +25,7 @@ namespace Business.Command
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
 
+
         public UserCommandHandler(VdDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
@@ -40,10 +43,15 @@ namespace Business.Command
             }
             var entity = mapper.Map<UserRequest, User>(request.Model);
             entity.UserNumber = new Random().Next(100000, 999999);
+            
+            var role = dbContext.Roles.Where(x => x.Id == 2).FirstOrDefault();
 
-            var entityResult = await dbContext.AddAsync(entity, cancellationToken);
+            entity.Roles.Add(role);
+            var entityResult = await dbContext.Set<User>().AddAsync(entity, cancellationToken);
+              
             await dbContext.SaveChangesAsync(cancellationToken);
-            var mapped = mapper.Map<User, UserResponse>(entityResult.Entity);
+
+            var mapped = mapper.Map<User, UserResponse>(entity);
 
             return new ApiResponse<UserResponse>(mapped);
         }

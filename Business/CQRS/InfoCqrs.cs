@@ -15,5 +15,6 @@ namespace Business.CQRS
 
     public record GetAllInfoQuery() : IRequest<ApiResponse<List<InfoResponse>>>;
     public record GetInfoByIdQuery(int Id) : IRequest<ApiResponse<InfoResponse>>;
+    public record GetUserInfosByIdQuery(int? Id) : IRequest<ApiResponse<List<InfoResponse>>>;
     public record GetInfoByParameterQuery(string IBAN, string InfoNumber, string Information) : IRequest<ApiResponse<List<InfoResponse>>>;
 }

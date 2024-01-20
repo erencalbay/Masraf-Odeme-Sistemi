@@ -9,6 +9,7 @@ using Schema;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Entity;
@@ -18,7 +19,9 @@ namespace Business.Query
     public class InfoQueryHandler :
     IRequestHandler<GetAllInfoQuery, ApiResponse<List<InfoResponse>>>,
     IRequestHandler<GetInfoByIdQuery, ApiResponse<InfoResponse>>,
-    IRequestHandler<GetInfoByParameterQuery, ApiResponse<List<InfoResponse>>>
+    IRequestHandler<GetInfoByParameterQuery, ApiResponse<List<InfoResponse>>>,
+    IRequestHandler<GetUserInfosByIdQuery, ApiResponse<List<InfoResponse>>>
+
     {
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
@@ -51,6 +54,14 @@ namespace Business.Query
                 x.Information.ToUpper().Contains(request.Information.ToUpper())
                 ).ToListAsync(cancellationToken);
             var mappedList = mapper.Map<List<Info>, List<InfoResponse>>(list);
+            return new ApiResponse<List<InfoResponse>>(mappedList);
+        }
+
+        public async Task<ApiResponse<List<InfoResponse>>> Handle(GetUserInfosByIdQuery request, CancellationToken cancellationToken)
+        {
+            var list = await dbContext.Set<Info>().Where(x => x.UserNumber == request.Id).ToListAsync(cancellationToken);
+            var mappedList = mapper.Map<List<Info>, List<InfoResponse>>(list);
+
             return new ApiResponse<List<InfoResponse>>(mappedList);
         }
     }

@@ -4,12 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using WebAPI.Entity;
 using Base.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebAPI.Entity
 {
-    [Table("User", Schema = "dbo")]
+    [Table("User")]
+
     public class User : BaseEntity
     {
+        public User()
+        {
+            Roles = new List<Role>();
+        }
         public string IdentityNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -20,6 +26,9 @@ namespace WebAPI.Entity
 
         public virtual List<Info> Infos { get; set; }
         public virtual List<Demand> Demands { get; set; }
+        public virtual List<Role> Roles { get; set; }
+
+        public UserRefreshToken UserRefreshToken { get; set; }
     }
 }
 public class UserConfiguration : IEntityTypeConfiguration<User>
@@ -55,6 +64,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserNumber)
             .IsRequired(true);
+
     }
 }
 

@@ -13,15 +13,20 @@ using WebAPI.Entity;
 
 namespace Schema
 {
+    public class Deneme : BaseRequest
+    {
+        public string Description { get; set; }
+        public IFormFile Receipt { get; set; }
+    }
     public class DemandRequest : BaseRequest
     {
+        [JsonIgnore]
         public int UserNumber { get; set; }
         public string Description { get; set; }
         public IFormFile Receipt { get; set; }
     }
     public class DemandResponse : BaseResponse
     {
-        public int DemandId { get; set; }
         public int UserNumber { get; set; }
         public string Description { get; set; }
         public int DemandNumber { get; set; }

@@ -63,7 +63,7 @@ namespace Business.Query
         {
             var list = await dbContext.Set<Demand>()
                 .Where(x =>
-                x.Description.Contains(request.Description.ToUpper()) ||
+                x.Description.Contains(request.Description) ||
                 x.DemandNumber.ToString().Contains(request.DemandNumber.ToString()) ||
                 x.DemandType.Equals(request.DemandType)
                 ).ToListAsync(cancellationToken);

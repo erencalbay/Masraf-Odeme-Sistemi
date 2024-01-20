@@ -17,9 +17,8 @@ namespace Schema
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public virtual List<InfoRequest> Infos { get; set; }
-        public virtual List<DemandRequest> Demands { get; set; }
     }
     public class UserResponse : BaseResponse
     {

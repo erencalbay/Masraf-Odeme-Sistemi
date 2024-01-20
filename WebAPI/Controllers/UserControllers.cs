@@ -3,14 +3,17 @@ using Base.Response;
 using Business.CQRS;
 using Data.DbContextCon;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Schema;
+using System.Security.Claims;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin")]
     public class UserControllers : ControllerBase
     {
         private readonly IMediator mediator;
@@ -28,15 +31,14 @@ namespace WebAPI.Controllers
             
         }
 
-        [HttpGet("{id}")]
-        public async Task<ApiResponse<UserResponse>> Get(int id)
+        [HttpGet]
+        public async Task<ApiResponse<UserResponse>> Get(int UserNumber)
         {
-            var operation = new GetUserByIdQuery(id);
+            var operation = new GetUserByIdQuery(UserNumber);
             var result = await mediator.Send(operation);
             return result;
         }
 
-        // BURALARI SADECE ADMİN KULLANACAK VE PERSONEL OLUŞTURACAK
         [HttpPost]
         public async Task<ApiResponse<UserResponse>> CreatePersonel([FromBody] UserRequest user)
         {
@@ -45,18 +47,18 @@ namespace WebAPI.Controllers
             return result;
         }
 
-        [HttpPut("{id}")]
-        public async Task<ApiResponse> Put(int id, [FromBody] UserRequest user)
+        [HttpPut]
+        public async Task<ApiResponse> Put(int UserNumber, [FromBody] UserRequest user)
         {
-            var operation = new UpdateUserCommand(id, user);
+            var operation = new UpdateUserCommand(UserNumber, user);
             var result = await mediator.Send(operation);
             return result;
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ApiResponse> Delete(int id)
+        [HttpDelete]
+        public async Task<ApiResponse> Delete(int UserNumber)
         {
-            var operation = new DeleteUserCommand(id); 
+            var operation = new DeleteUserCommand(UserNumber); 
             var result = await mediator.Send(operation);
             return result;
         }

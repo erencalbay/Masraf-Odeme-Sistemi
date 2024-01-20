@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entity
 {
-    [Table("Info", Schema = "dbo")]
+    [Table("Info")]
     public class Info : BaseEntity
     {
         public int InfoId { get; set; }
