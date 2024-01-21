@@ -50,6 +50,7 @@ namespace Business.Consumers
             var entity = mapper.Map<DemandRequest, Demand>(demandRequest);
             entity.DemandNumber = demandNumber;
             entity.DemandResponseType = DemandResponseType.Pending;
+            entity.RejectionResponse = "Waiting for Response";
 
             Log.Information($"Demand is with Number: {demandNumber} created by {message.UserNumber}");
 

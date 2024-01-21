@@ -36,7 +36,7 @@ namespace WebAPI.Middlewares
 
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonSerializer.Serialize("Internal Server"));
+                await context.Response.WriteAsync(JsonSerializer.Serialize("UnexpectedError"));
             }
         }
     }
