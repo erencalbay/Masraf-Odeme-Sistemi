@@ -8,6 +8,7 @@ using Data.Enum;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Schema;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,8 @@ namespace Business.Command
             entity.DemandType = DemandType.Pending;
             //entity.Receipt = receipt;
 
+            Log.Information($"Demand is with Number: {demandNumber} created by {request.Model.UserNumber}");
+
             var entityResult = await dbContext.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
             var mapped = mapper.Map<Demand, DemandResponse>(entityResult.Entity);
@@ -63,7 +66,9 @@ namespace Business.Command
 
             if (fromdb == null)
             {
-                return new ApiResponse("Record Not Found");
+                var message = "Record Not Found";
+                Log.Error(message);
+                return new ApiResponse(message);
             }
 
             fromdb.Description = request.Model.Description;
@@ -79,7 +84,9 @@ namespace Business.Command
 
             if (fromdb == null)
             {
-                return new ApiResponse("Record Not Found");
+                var message = "Record Not Found";
+                Log.Error(message);
+                return new ApiResponse(message);
             }
 
             fromdb.RejectionResponse = request.Model.RejectionResponse;
@@ -98,7 +105,9 @@ namespace Business.Command
                 .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
             {
-                return new ApiResponse("Record Not Found");
+                var message = "Record Not Found";
+                Log.Error(message);
+                return new ApiResponse(message);
             }
             //dbContext.Set<User>().Remove(fromdb);
             fromdb.isActive = false;

@@ -22,6 +22,7 @@ using Microsoft.IdentityModel.Tokens;
 using Schema;
 using Microsoft.OpenApi.Models;
 using WebAPI.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,12 @@ builder.Services.AddSingleton(mapperConf.CreateMapper());
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
+var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(config).CreateLogger();
+Log.Information("App server is starting");
+
+builder.Host.UseSerilog();
+
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<CustomTokenOptions>();
 
 
@@ -108,10 +115,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    //app.UseMiddleware<ErrorHandlerMiddleware>();
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseAuthentication();
 
