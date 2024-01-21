@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Base.Response;
+using Business.Consumers;
 using Business.CQRS;
 using Business.Services.EftPaymentService;
-using Business.Services.FileUploadService;
 using Data.DbContextCon;
 using Data.Entity;
 using Data.Enum;
@@ -20,7 +20,6 @@ using WebAPI.Entity;
 namespace Business.Command
 {
     public class DemandCommandHandler :
-    IRequestHandler<CreateDemandCommand, ApiResponse<DemandResponse>>,
     IRequestHandler<UpdateDemandCommandFromUser, ApiResponse>,
     IRequestHandler<ResponseDemandCommandFromAdmin, ApiResponse>,
     IRequestHandler<DeleteDemandCommand, ApiResponse>
@@ -35,6 +34,8 @@ namespace Business.Command
             this.mapper = mapper;
         }
 
+        //old demand create
+        /*
         public async Task<ApiResponse<DemandResponse>> Handle(CreateDemandCommand request, CancellationToken cancellationToken)
         {
             var demandNumber = new Random().Next(1000000, 9999999);
@@ -45,7 +46,6 @@ namespace Business.Command
             {
                 Handle(request, cancellationToken);
             }
-            var receipt = await FileUploadService.WriteFile(request.Model.Receipt);
             var entity = mapper.Map<DemandRequest, Demand>(request.Model);
             entity.DemandNumber = demandNumber;
             entity.DemandResponseType = DemandResponseType.Pending;
@@ -53,12 +53,13 @@ namespace Business.Command
 
             Log.Information($"Demand is with Number: {demandNumber} created by {request.Model.UserNumber}");
 
-            var entityResult = await dbContext.AddAsync(entity, cancellationToken);
+            var entityResult = await dbContext.AddAsync(entity);
             await dbContext.SaveChangesAsync(cancellationToken);
             var mapped = mapper.Map<Demand, DemandResponse>(entityResult.Entity);
 
             return new ApiResponse<DemandResponse>(mapped);
         }
+        */
 
         public async Task<ApiResponse> Handle(UpdateDemandCommandFromUser request, CancellationToken cancellationToken)
         {

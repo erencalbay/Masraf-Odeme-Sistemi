@@ -18,14 +18,14 @@ namespace Schema
         [JsonIgnore]
         public int UserNumber { get; set; }
         public string Description { get; set; }
-        public IFormFile Receipt { get; set; }
+        public string Receipt { get; set; }
     }
     public class DemandResponse : BaseResponse
     {
         public int UserNumber { get; set; }
         public string Description { get; set; }
         public int DemandNumber { get; set; }
-        public IFormFile Receipt { get; set; }
+        public string Receipt { get; set; }
         public DemandResponseType DemandResponseType { get; set; }
         public string RejectionResponse { get; set; }
     }
@@ -43,7 +43,7 @@ namespace Schema
         public int UserNumber { get; set; }
         public string Description { get; set; }
         public int DemandNumber { get; set; }
-        public IFormFile Receipt { get; set; }
+        public string Receipt { get; set; }
         public DemandResponseType DemandResponseType { get; set; }
         public string RejectionResponse { get; set; }
     }

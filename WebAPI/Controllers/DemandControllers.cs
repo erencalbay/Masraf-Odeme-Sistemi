@@ -1,6 +1,5 @@
 ﻿using Base.Response;
 using Business.CQRS;
-using Business.Services.FileUploadService;
 using Data.DbContextCon;
 using Data.Entity;
 using Data.Enum;
@@ -70,6 +69,9 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(opr);
             return result;
         }
+
+        // eski kullanım
+        /*
         // PERSONEL KULLANACAK talep oluşturacak
         [HttpPost]
         public async Task<ApiResponse<DemandResponse>> ExpenseEntryFromEmployee([FromQuery] DemandRequest Demand)
@@ -79,6 +81,8 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(operation);
             return result;
         }
+        */
+
         // ADMİN KULLANACAK ve cevap verecek
         [HttpPut]
         [Authorize(Roles = "admin")]

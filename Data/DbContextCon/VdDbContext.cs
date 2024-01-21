@@ -50,17 +50,19 @@ namespace Data.DbContextCon
                 new RoleUser { UserNumber = 445566, RoleId = 2 }
             });
 
+            
             modelBuilder.Entity<Demand>().HasData(new List<Demand>()
             {
-                new Demand { DemandId = 1, DemandNumber = 111111, Description = "Talep 1", isActive = true, UserNumber = 445566},
-                new Demand { DemandId = 2, DemandNumber = 222222, Description = "Talep 2", isActive = false, UserNumber = 445566}
+                new Demand { DemandId = 1, DemandNumber = 111111, Description = "Talep 1", isActive = true, UserNumber = 445566, Receipt = "Receipts/Mavi.jpg"},
+                new Demand { DemandId = 2, DemandNumber = 222222, Description = "Talep 2", isActive = false, UserNumber = 445566, Receipt = "Receipts/Kırmızı.jpg"}
             });
-
+            
             modelBuilder.Entity<Info>().HasData(new List<Info>()
             {
                 new Info { InfoId = 1, IBAN = "TR760009901234567800100001", InfoNumber = 452134, isActive = false, isDefault = true, UserNumber= 445566, Information = "Aktif Olan Banka Hesabı", InfoType = "Ana Hesap"},
                 new Info { InfoId = 2, IBAN = "TR760009901234567800100002", InfoNumber = 652134, isActive = false, isDefault = false, UserNumber = 445566, Information = "Banka Hesabı 2", InfoType = "Yan Hesap"}
             });
+            
 
             base.OnModelCreating(modelBuilder);
         }

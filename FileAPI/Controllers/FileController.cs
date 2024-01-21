@@ -11,7 +11,7 @@ namespace FileAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "employee")]
     public class FileController : ControllerBase
     {
         private readonly FileUploadAPIService _fileUploadAPIService;
@@ -30,7 +30,6 @@ namespace FileAPI.Controllers
             var UserNumber = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Value;
             ReceiptsEvent @event = new ReceiptsEvent { Description = fileUploadRequest.Description, Path = result.First().pathOrContainerName, UserNumber = int.Parse(UserNumber)};
             await _publishEndpoint.Publish(@event);
-
             return Ok();
         }
     }
