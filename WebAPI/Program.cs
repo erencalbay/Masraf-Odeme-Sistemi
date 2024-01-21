@@ -25,6 +25,7 @@ using WebAPI.Middlewares;
 using Serilog;
 using MassTransit;
 using Business.Consumers;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,6 +94,10 @@ Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(config).CreateLogg
 Log.Information("App server is starting");
 builder.Host.UseSerilog();
 
+builder.Services.AddStackExchangeRedisCache(action =>
+{
+    action.Configuration = "localhost:6379";
+});
 
 builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<CustomTokenOptions>();
