@@ -43,8 +43,14 @@ namespace Data.DbContextCon
                 new Role { Id = 1, Name = "admin"},
                 new Role { Id = 2, Name = "employee"}});
 
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<RoleUser>().HasKey(ky => new { ky.RoleId, ky.UserNumber});
+            modelBuilder.Entity<RoleUser>().HasData(new List<RoleUser>()
+            {
+                new RoleUser { UserNumber = 112233, RoleId = 1 },
+                new RoleUser { UserNumber = 445566, RoleId = 2 }
+            });
 
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

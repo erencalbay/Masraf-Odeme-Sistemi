@@ -14,7 +14,7 @@ namespace WebAPI.Entity
     {
         public User()
         {
-            Roles = new List<Role>();
+            Roles = new List<RoleUser>();
         }
         public string IdentityNumber { get; set; }
         public string FirstName { get; set; }
@@ -26,7 +26,8 @@ namespace WebAPI.Entity
 
         public virtual List<Info> Infos { get; set; }
         public virtual List<Demand> Demands { get; set; }
-        public virtual List<Role> Roles { get; set; }
+        public virtual List<RoleUser> Roles { get; set; }
+
 
         public UserRefreshToken UserRefreshToken { get; set; }
     }
@@ -56,8 +57,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(x => x.IdentityNumber).IsUnique(true);
 
         builder.HasData(new List<User> { 
-            new User { UserNumber = 445566, DateOfBirth = DateTime.UtcNow.AddYears(-20), Email = "erencalbay@gmail.com", FirstName = "Eren", LastName = "Çalbay", Roles = new List<Role>(), IdentityNumber = "44332211002"},
-            new User { UserNumber = 112233, DateOfBirth = DateTime.UtcNow.AddYears(-15), Email = "ahmetkızılkaya@gmail.com", FirstName = "Ahmet", LastName = "Kızılkaya", Roles = new List<Role>(), IdentityNumber = "34332211002"}});
+            //employee user
+            new User { UserNumber = 445566, DateOfBirth = DateTime.UtcNow.AddYears(-20), Email = "erencalbay@gmail.com", FirstName = "Eren", LastName = "Çalbay", IdentityNumber = "44332211002"},
+            //admin user
+            new User { UserNumber = 112233, DateOfBirth = DateTime.UtcNow.AddYears(-15), Email = "ahmetkızılkaya@gmail.com", FirstName = "Ahmet", LastName = "Kızılkaya", IdentityNumber = "34332211002"}});
 
         builder.HasMany(x => x.Demands)
             .WithOne(x => x.User)

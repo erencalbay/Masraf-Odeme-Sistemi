@@ -29,11 +29,18 @@ namespace Business.Services.AuthenticationService
         {
             if (login == null) throw new ArgumentNullException(nameof(login));
 
-            var user = await _dbcontext.Set<User>().Where(x => x.UserNumber == login.UserNumber).FirstOrDefaultAsync();
+            var user = await _dbcontext.Set<User>().Where(x => x.UserNumber == login.UserNumber).Include(x => x.Roles).FirstOrDefaultAsync();
+
 
             if (user == null) throw new Exception("UserNumber is wrong");
 
-            var token = await _tokenService.CreateToken(user);
+            var roleIds = user.Roles.Select(x => x.RoleId).ToList();
+            var roles = await _dbcontext.Set<Role>().Where(x => roleIds.Contains(x.Id)).ToListAsync();
+
+            var token = await _tokenService.CreateToken(user, roles.Select(x => 
+            {
+                return x.Name;
+            }).ToList());
 
             var userRefreshToken = await _dbcontext.Set<UserRefreshToken>().Where(rt => rt.UserId == user.UserNumber).FirstOrDefaultAsync();
 
@@ -59,10 +66,16 @@ namespace Business.Services.AuthenticationService
 
             if (DateTime.UtcNow > existReFreshToken.Expiration) throw new Exception("Refresh token expired");
 
-            var user = await _dbcontext.Set<User>().Where(x => x.UserNumber == existReFreshToken.UserId).FirstOrDefaultAsync();
+            var user = await _dbcontext.Set<User>().Where(x => x.UserNumber == existReFreshToken.UserId).Include(x => x.Roles).FirstOrDefaultAsync();
             if (user == null) throw new Exception("Data Binding Error Check AuthenditcationService relation userId -> refreshToken");
 
-            var token = await _tokenService.CreateToken(user);
+            var roleIds = user.Roles.Select(x => x.RoleId).ToList();
+            var roles = await _dbcontext.Set<Role>().Where(x => roleIds.Contains(x.Id)).ToListAsync();
+
+            var token = await _tokenService.CreateToken(user, roles.Select(x =>
+            {
+                return x.Name;
+            }).ToList());
 
             existReFreshToken.Code = token.RefreshToken;
             existReFreshToken.Expiration = token.RefreshTokenExpiration;

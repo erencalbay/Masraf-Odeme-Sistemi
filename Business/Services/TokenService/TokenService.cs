@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Services.Sign;
 using Data.DbContextCon;
+using Data.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -29,7 +30,7 @@ namespace Business.Services.TokenService
             _vdDbContext = vdDbContext;
         }
 
-        public async Task<Token> CreateToken(User user)
+        public async Task<Token> CreateToken(User user, List<string> roles)
         {
             // perapare token option from configuration
             var accessTokenExpiration = DateTime.UtcNow.AddMinutes(_customTokenOptions.AccessTokenExpiration);
@@ -44,7 +45,7 @@ namespace Business.Services.TokenService
                 expires: accessTokenExpiration,
                 notBefore: DateTime.UtcNow,
                 signingCredentials: signingCredentials,
-                claims: await GetClaims(user, _customTokenOptions.Audiences));
+                claims: await GetClaims(user,roles, _customTokenOptions.Audiences));
 
             var handler = new JwtSecurityTokenHandler();
             var token = handler.WriteToken(jwtSecurityToken);
@@ -74,7 +75,7 @@ namespace Business.Services.TokenService
 
         }
 
-        private async Task<IEnumerable<Claim>> GetClaims(User user, List<string> audiences)
+        private async Task<IEnumerable<Claim>> GetClaims(User user, List<string> roles, List<string> audiences)
         {
             // token's payload is claims
 
@@ -94,12 +95,12 @@ namespace Business.Services.TokenService
             // this claims about user, after created jwt they added to payload
 
             userClaimList.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
-            // we apply to format to arch can find Audiencess 
+            // we apply to format to arch can find Audiencess
 
 
             // now we get user roles and add to claims
             var userRoles = await _vdDbContext.Set<User>().Include(x => x.Roles).Where(x => x.UserNumber == user.UserNumber).FirstOrDefaultAsync();
-            userClaimList.AddRange(userRoles.Roles.Select(r => new Claim(ClaimTypes.Role, r.Name)));
+            userClaimList.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
 
             return userClaimList;

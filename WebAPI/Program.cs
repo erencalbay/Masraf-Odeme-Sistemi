@@ -23,6 +23,8 @@ using Schema;
 using Microsoft.OpenApi.Models;
 using WebAPI.Middlewares;
 using Serilog;
+using MassTransit;
+using Business.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +37,20 @@ builder.Services.AddControllers().AddFluentValidation(x =>
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddMassTransit(configure =>
+{
+    configure.AddConsumer<ReceiptsEventConsumer>();
+    configure.UsingRabbitMq((context, configurator) =>
+    {
+        configurator.Host(builder.Configuration["RabbitMQ"]);
+
+        configurator.ReceiveEndpoint("receipt_queue", e => { 
+            e.ConfigureConsumer<ReceiptsEventConsumer>(context); 
+            e.DiscardSkippedMessages(); });
+    });
+});
+
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Expense API", Version = "v1" });
@@ -61,7 +77,8 @@ builder.Services.AddSwaggerGen(option =>
             new string[]{}
         }
     });
-}); builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
+}); 
+
 builder.Services.AddDbContext<VdDbContext>(options => options.UseNpgsql(Configuration.ConnectionString));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(VbTransferCommand).GetTypeInfo().Assembly));
     
@@ -74,13 +91,11 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(config).CreateLogger();
 Log.Information("App server is starting");
-
 builder.Host.UseSerilog();
 
+
+builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<CustomTokenOptions>();
-
-
-
 builder.Services.AddAuthentication(options =>
 {
     //set Schema : "Bearer"

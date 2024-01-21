@@ -46,7 +46,7 @@ namespace Business.Command
             
             var role = dbContext.Roles.Where(x => x.Id == 2).FirstOrDefault();
 
-            entity.Roles.Add(role);
+            entity.Roles.Add(new RoleUser { RoleId = role.Id, UserNumber = entity.UserNumber});
             var entityResult = await dbContext.Set<User>().AddAsync(entity, cancellationToken);
               
             await dbContext.SaveChangesAsync(cancellationToken);
