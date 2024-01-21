@@ -10,6 +10,8 @@ namespace WebAPI.Entity
 {
     [Table("User")]
 
+    // Kullanıcı entitiyleri
+
     public class User : BaseEntity
     {
         public User()
@@ -32,6 +34,9 @@ namespace WebAPI.Entity
         public UserRefreshToken UserRefreshToken { get; set; }
     }
 }
+
+// Kullanıcılar için DB validasyon ve bağlantı işlemleri 
+
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
@@ -56,17 +61,21 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(x => x.IdentityNumber).IsUnique(true);
 
+
+        // Migrationda oluşması için userlar
         builder.HasData(new List<User> { 
             //employee user
             new User { UserNumber = 445566, DateOfBirth = DateTime.UtcNow.AddYears(-20), Email = "erencalbay@gmail.com", FirstName = "Eren", LastName = "Çalbay", IdentityNumber = "44332211002"},
             //admin user
             new User { UserNumber = 112233, DateOfBirth = DateTime.UtcNow.AddYears(-15), Email = "ahmetkızılkaya@gmail.com", FirstName = "Ahmet", LastName = "Kızılkaya", IdentityNumber = "34332211002"}});
 
+        //talep ile bire çok ilişki 
         builder.HasMany(x => x.Demands)
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserNumber)
             .IsRequired(true);
 
+        //info ile bire çok ilişki 
         builder.HasMany(x => x.Infos)
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserNumber)

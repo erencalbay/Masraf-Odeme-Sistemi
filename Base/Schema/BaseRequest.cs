@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Base.Schema
 {
+    // Bütün requestlerde bulunacak olan Base Requestler.
     public abstract class BaseRequest
     {
     }

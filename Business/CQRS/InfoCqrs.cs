@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// Info Command Query Responsibility Segregation
 namespace Business.CQRS
 {
     public record CreateInfoCommand(InfoRequest Model) : IRequest<ApiResponse<InfoResponse>>;

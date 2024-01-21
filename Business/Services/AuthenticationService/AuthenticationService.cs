@@ -25,6 +25,7 @@ namespace Business.Services.AuthenticationService
             _dbcontext = dbcontext;
         }
 
+        // Token yenileme işlemleri
         public async Task<Token> LoginAsync(Login login)
         {
             if (login == null) throw new ArgumentNullException(nameof(login));
@@ -58,6 +59,8 @@ namespace Business.Services.AuthenticationService
 
             return token;
         }
+
+        // Tokenın yenilenme işlemi
         public async Task<Token> LoginByRefreshTokenAsync(string refreshToken)
         {
             var existReFreshToken = await _dbcontext.Set<UserRefreshToken>().Where(rt => rt.Code.Equals(refreshToken)).FirstOrDefaultAsync();
@@ -85,6 +88,7 @@ namespace Business.Services.AuthenticationService
             return token;
         }
 
+        // Refresh token ile revokelama
         public async Task<bool> RevokeRefreshToken(string refreshToken)
         {
             var existRefreshToken = await _dbcontext.Set<UserRefreshToken>().Where(rt => rt.Code.Equals(refreshToken)).FirstOrDefaultAsync();

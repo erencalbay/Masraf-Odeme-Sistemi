@@ -16,6 +16,7 @@ namespace WebAPI.Controllers
     [Authorize]
     public class InfoControllers : ControllerBase
     {
+        // Dependency Injection
         private readonly IMediator mediator;
 
         public InfoControllers(IMediator mediator)
@@ -23,6 +24,7 @@ namespace WebAPI.Controllers
             this.mediator = mediator;
         }
 
+        //admin görücek ve bütün infoları listeleyecek
         [HttpGet]
         [Authorize(Roles = "admin")]
         public async Task<ApiResponse<List<InfoResponse>>> GetAllInfos()
@@ -32,6 +34,7 @@ namespace WebAPI.Controllers
             return result;
         }
         
+        // admin infoid ile info alacak
         [HttpGet]
         [Route("GetInfoWithId")]
         [Authorize(Roles = "admin")]
@@ -42,11 +45,13 @@ namespace WebAPI.Controllers
             return result;
         }
 
+        // admin userid ye ait olan infoları alacak
         [HttpGet]
         [Route("GetInfosWithUserId")]
         [Authorize(Roles = "employee, admin")]
         public async Task<ApiResponse<List<InfoResponse>>> GetInfosWithUserId(int? UserNumber)
         {
+            // null control
             if(UserNumber == null)
             {
                 UserNumber = int.Parse(User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Value);
@@ -55,7 +60,7 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(operation);
             return result;
         }
-        //PERSONEL DEĞİŞTİRECEK     
+        // personel infosunu ekleyebilecek  
         [HttpPost]
         [Authorize(Roles = "employee")]
         public async Task<ApiResponse<InfoResponse>> Post([FromBody] InfoRequest info)
@@ -64,7 +69,7 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(operation);
             return result;
         }
-        //PERSONEL DEĞİŞTİRECEK
+        // personel infosunu değiştirebilecek
         [Authorize(Roles = "employee")]
         [HttpPut]
         public async Task<ApiResponse> Put(int InfoId, [FromBody] InfoRequest info)
@@ -74,6 +79,7 @@ namespace WebAPI.Controllers
             return result;
         }
 
+        // admin infoları silebilecek
         [HttpDelete]
         [Authorize(Roles = "admin")]
         public async Task<ApiResponse> Delete(int InfoId)

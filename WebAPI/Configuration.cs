@@ -9,6 +9,7 @@ namespace Data
 {
     static class Configuration
     {
+        // Database'e bağlanmak için gerekli olan connection stringin alınması
         static public string ConnectionString
         {
             get

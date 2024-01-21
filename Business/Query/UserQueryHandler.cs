@@ -19,6 +19,8 @@ namespace Business.Query
     IRequestHandler<GetUserByIdQuery, ApiResponse<UserResponse>>,
     IRequestHandler<GetUserByParameterQuery, ApiResponse<List<UserResponse>>>
     {
+
+        //dependency injection
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
 
@@ -28,6 +30,7 @@ namespace Business.Query
             this.mapper = mapper;
         }
 
+        // Aktif Kullanıcıların alınması
         public async Task<ApiResponse<List<UserResponse>>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
         {
             var list = await dbContext.Set<User>()
@@ -39,6 +42,7 @@ namespace Business.Query
             return new ApiResponse<List<UserResponse>>(mappedList);
         }
 
+        // Userların id filtresi alınması
         public async Task<ApiResponse<UserResponse>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var entity = await dbContext.Set<User>()
@@ -49,6 +53,7 @@ namespace Business.Query
             return new ApiResponse<UserResponse>(mapped);
         }
 
+        // Userların parametreler ile filtrelenmesi
         public async Task<ApiResponse<List<UserResponse>>> Handle(GetUserByParameterQuery request, CancellationToken cancellationToken)
         {
             var list =  await dbContext.Set<User>()

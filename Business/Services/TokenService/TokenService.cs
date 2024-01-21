@@ -21,6 +21,7 @@ namespace Business.Services.TokenService
 {
     public class TokenService : ITokenService
     {
+        //Dependency injection.
         private readonly CustomTokenOptions _customTokenOptions;
         private readonly VdDbContext _vdDbContext;
 
@@ -30,6 +31,7 @@ namespace Business.Services.TokenService
             _vdDbContext = vdDbContext;
         }
 
+        // Kullanıcıya verilecek olan tokenın oluşturulması
         public async Task<Token> CreateToken(User user, List<string> roles)
         {
             // perapare token option from configuration

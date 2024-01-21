@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Schema
 {
+    // Giriş için gerekli olan dto lar
     public class RefreshTokenDto
     {
         public string RefreshToken { get; set; }

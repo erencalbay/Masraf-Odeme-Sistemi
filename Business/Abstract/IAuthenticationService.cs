@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
+    // Auth service için gerekli olan methodları interface olarak tanımladık.
     public interface IAuthenticationService
     {
         Task<Token> LoginAsync(Login login);

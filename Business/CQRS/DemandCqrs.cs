@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// Demand Command Query Responsibility Segregation 
 namespace Business.CQRS
 {
     public record CreateDemandCommand(DemandRequest Model) : IRequest<ApiResponse<DemandResponse>>;

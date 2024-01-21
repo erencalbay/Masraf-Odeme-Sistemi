@@ -25,18 +25,23 @@ namespace Business.Consumers
 {
     public class ReceiptsEventConsumer : IConsumer<ReceiptsEvent>
     {
+        // Dependency Injection
         private readonly IMediator mediator;
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
-
+      
         public ReceiptsEventConsumer(IMediator mediator, VdDbContext dbContext, IMapper mapper)
         {
             this.mediator = mediator;
             this.dbContext = dbContext;
             this.mapper = mapper;
         }
+
+
+        // RabbitMQ ile Consume edilmesi
         public async Task Consume(ConsumeContext<ReceiptsEvent> context)
         {
+            // Verinin alınması
             var message = context.Message;
             DemandRequest demandRequest = new DemandRequest { Description = message.Description, Receipt = message.Path, UserNumber = message.UserNumber };
 

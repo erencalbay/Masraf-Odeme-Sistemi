@@ -9,6 +9,7 @@ using WebAPI.Entity;
 
 namespace Business.Abstract
 {
+    // Token service için gerekli olan methodları interface olarak tanımladık.
     public interface ITokenService
     {
         Task<Token> CreateToken(User user, List<string> roles);

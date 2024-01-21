@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Schema
 {
+    // Giriş için DTO'lar
     public class Login
     {
         public int UserNumber { get; set; }

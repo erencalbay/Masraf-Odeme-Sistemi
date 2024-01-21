@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
         {
             this.mediator = mediator;
         }
-        // ADMİN KULLANACAK VE TÜM TALEPLERİ GÖRECEK
+        // admin kullanacak ve aktif olan talepleri görecek
         [HttpGet]
         [ActionName("GetAllActiveDemand")]
         [Authorize(Roles = "admin")]
@@ -33,6 +33,7 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(opr);
             return result;
         }
+        // admin kullanacak ve aktif olmayan talepleri görecek
         [HttpGet]
         [Authorize(Roles = "admin")]
         public async Task<ApiResponse<List<DemandResponse>>> GetAllNotActiveDemand()
@@ -41,7 +42,7 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(opr);
             return result;
         }
-        // PERSONEL KULLANACAK
+        // personel kullanacak ve taleplerini görecek
         [HttpGet]
         [ActionName("EmployeeDemands")]
         [Authorize(Roles = "employee")]
@@ -53,7 +54,8 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(opr);
             return result;
         }
-        // ADMİN KULLANACAK VE TÜM TALEPLERİ GÖRECEK DEMAND ID İLE
+
+        // admin kullanacak ve id ile talebi görecek
         [HttpGet]
         [Authorize(Roles = "admin")]
         public async Task<ApiResponse<DemandResponse>> Get(int id)
@@ -62,28 +64,17 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(operation);
             return result;
         }
+        // Talepleri filtreleme ile kullanıcının görmesi sağlanacak aynı zamanda adminin de.
         [HttpGet]
         public async Task<ApiResponse<List<DemandResponse>>> GetDemandsWithFiltering(string? Description, int? DemandNumber, DemandResponseType? DemandType)
         {
+            
             var opr = new GetDemandByParameterQuery(Description, DemandNumber, DemandType);
             var result = await mediator.Send(opr);
             return result;
         }
 
-        // eski kullanım
-        /*
-        // PERSONEL KULLANACAK talep oluşturacak
-        [HttpPost]
-        public async Task<ApiResponse<DemandResponse>> ExpenseEntryFromEmployee([FromQuery] DemandRequest Demand)
-        {
-            var userNumber = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Value;
-            var operation = new CreateDemandCommand(new DemandRequest { Description = Demand.Description, Receipt = Demand.Receipt, UserNumber = int.Parse(userNumber) });
-            var result = await mediator.Send(operation);
-            return result;
-        }
-        */
-
-        // ADMİN KULLANACAK ve cevap verecek
+        // admin kullanacak ve talebi cevaplayacak
         [HttpPut]
         [Authorize(Roles = "admin")]
         public async Task<ApiResponse> ExpenseResponseFromAdmin(int DemandNumber, [FromQuery] DemandRequestFromAdmin Demand)
@@ -92,7 +83,7 @@ namespace WebAPI.Controllers
             var result = await mediator.Send(operation);
             return result;
         }
-        // ADMİN KULLANACAK
+        // admin kullanacak ve talebi silecek
         [HttpDelete]
         [Authorize(Roles = "admin")]
         public async Task<ApiResponse> Delete(int DemandNumber)

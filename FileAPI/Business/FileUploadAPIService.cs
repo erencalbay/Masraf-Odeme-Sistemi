@@ -13,13 +13,14 @@ namespace FileAPI.Business
             _webHostEnviroment = webHostEnviroment;
         }
 
+        // File Delete
         public async Task DeleteAsync(string pathOrContainerName, string fileName)
         {
             string mainPah = Path.Combine(_webHostEnviroment.WebRootPath, pathOrContainerName);
             System.IO.File.Delete(Path.Combine(mainPah, fileName));
         }
 
-
+        // Fileların alınması 
         public List<string> GetFiles(string pathOrContainerName)
         {
             DirectoryInfo directory = new DirectoryInfo(pathOrContainerName);
@@ -30,9 +31,10 @@ namespace FileAPI.Business
            => System.IO.File.Exists(Path.Combine(pathOrContainerName, fileName));
 
 
-
+        
         public async Task<List<(string fileName, string pathOrContainerName)>> UploadAsync(string pathOrContainerName, IFormFileCollection files)
         {
+            // upload path kontrolü
             string uploadPath = Path.Combine(_webHostEnviroment.WebRootPath, pathOrContainerName);
             if (!Directory.Exists(uploadPath))
             {
@@ -41,6 +43,7 @@ namespace FileAPI.Business
 
             List<(string fileName, string path)> datas = new List<(string fileName, string path)>();
 
+            // Yüklenen dosyalara göre isimlendirme ve yükleme işleminin yapılması
             foreach (IFormFile file in files)
             {
                 string fileNewName = await FileRenameAsync(uploadPath, file.FileName);
@@ -54,6 +57,7 @@ namespace FileAPI.Business
 
         }
 
+        // Dosyanın diğer işlemler için kopyalanması
         private async Task<bool> CopyFileAsync(string path, IFormFile file)
         {
             try
@@ -71,6 +75,7 @@ namespace FileAPI.Business
             }
 
         }
+        // Dosya isimlendirmesinde kopyalamanın engeli için yeniden isimlendirilmesi
         private int Counter { get; set; } = 1;
         protected async Task<string> FileRenameAsync(string path, string fileName, bool first = true)
         {
@@ -105,6 +110,7 @@ namespace FileAPI.Business
 
             return newFileName;
         }
+        // türkçe karakterlerin düzeltilmesi
         public string CharecterRegulatory(string name)
         {
             return name.Replace('İ', 'I')

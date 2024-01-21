@@ -12,6 +12,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entity
 {
+    // Info entitiyleri
+
     [Table("Info")]
     public class Info : BaseEntity
     {
@@ -26,6 +28,7 @@ namespace Data.Entity
     }
 }
 
+// Banka bilgisi - info için DB validasyon ve bağlantı işlemleri 
 public class InfoConfiguration : IEntityTypeConfiguration<Info>
 {
     public void Configure(EntityTypeBuilder<Info> builder)

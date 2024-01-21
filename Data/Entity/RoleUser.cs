@@ -9,6 +9,7 @@ using WebAPI.Entity;
 
 namespace Data.Entity
 {
+    // Role User bağlantısı için entiy
     public class RoleUser
     {
         [Key]

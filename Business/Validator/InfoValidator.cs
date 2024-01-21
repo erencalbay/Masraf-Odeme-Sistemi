@@ -10,6 +10,7 @@ namespace Business.Validator
 {
     public class InfoValidator : AbstractValidator<InfoRequest>
     {
+        // Kullanıcı infolarının-banka bilgilerinin validasyonu
         public InfoValidator()
         {
             RuleFor(x => x.InfoType).NotEmpty().WithName("Type of info like a account type");

@@ -2,7 +2,7 @@
 using MediatR;
 using Schema;
 
-
+// User Command Query Responsibility Segregation
 namespace Business.CQRS
 {
     public record CreateUserCommand(UserRequest Model) : IRequest<ApiResponse<UserResponse>>;

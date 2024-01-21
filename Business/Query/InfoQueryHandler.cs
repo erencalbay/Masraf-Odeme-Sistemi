@@ -23,6 +23,8 @@ namespace Business.Query
     IRequestHandler<GetUserInfosByIdQuery, ApiResponse<List<InfoResponse>>>
 
     {
+
+        // dependency injection.
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
 
@@ -31,6 +33,8 @@ namespace Business.Query
             this.dbContext = dbContext;
             this.mapper = mapper;
         }
+
+        // Bütün banka bilgileri-infonun alınması
         public async Task<ApiResponse<List<InfoResponse>>> Handle(GetAllInfoQuery request, CancellationToken cancellationToken)
         {
             var list = await dbContext.Set<Info>()
@@ -38,6 +42,8 @@ namespace Business.Query
             var mappedList = mapper.Map<List<Info>, List<InfoResponse>>(list);
             return new ApiResponse<List<InfoResponse>>(mappedList);
         }
+
+        // Info id ile infonun alınması
         public async Task<ApiResponse<InfoResponse>> Handle(GetInfoByIdQuery request, CancellationToken cancellationToken)
         {
             var entity = await dbContext.Set<Info>()
@@ -45,6 +51,8 @@ namespace Business.Query
             var mapped = mapper.Map<Info, InfoResponse>(entity);
             return new ApiResponse<InfoResponse>(mapped);
         }
+
+        // Parametreler ile infonun filtrelenmesi 
         public async Task<ApiResponse<List<InfoResponse>>> Handle(GetInfoByParameterQuery request, CancellationToken cancellationToken)
         {
             var list = await dbContext.Set<Info>()
@@ -57,6 +65,7 @@ namespace Business.Query
             return new ApiResponse<List<InfoResponse>>(mappedList);
         }
 
+        // Usernumber ile infolarının alınması
         public async Task<ApiResponse<List<InfoResponse>>> Handle(GetUserInfosByIdQuery request, CancellationToken cancellationToken)
         {
             var list = await dbContext.Set<Info>().Where(x => x.UserNumber == request.Id).ToListAsync(cancellationToken);

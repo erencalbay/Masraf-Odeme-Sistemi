@@ -21,6 +21,7 @@ namespace Business.Command
     IRequestHandler<DeleteInfoCommand, ApiResponse>
 
     {
+        // dependency injection
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
 

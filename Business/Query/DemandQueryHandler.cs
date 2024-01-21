@@ -22,6 +22,8 @@ namespace Business.Query
     IRequestHandler<GetEmployeeDemandQuery, ApiResponse<List<DemandResponse>>>,
     IRequestHandler<GetAllNotActiveDemandQuery, ApiResponse<List<DemandResponse>>>
     {
+
+        // Dependency Injection
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
 
@@ -31,6 +33,7 @@ namespace Business.Query
             this.mapper = mapper;
         }
 
+        // Bütün Aktif Taleplerin admin tarafından cevaplanmak üzere alınması
         public async Task<ApiResponse<List<DemandResponse>>> Handle(GetAllDemandQuery request, CancellationToken cancellationToken)
         {
             var list = await dbContext.Set<Demand>()
@@ -40,6 +43,7 @@ namespace Business.Query
             return new ApiResponse<List<DemandResponse>>(mappedList);
         }
 
+        // Bütün Pasif Taleplerin admin tarafından cevaplanmak üzere alınması
         public async Task<ApiResponse<List<DemandResponse>>> Handle(GetAllNotActiveDemandQuery request, CancellationToken cancellationToken)
         {
             var list = await dbContext.Set<Demand>()
@@ -49,16 +53,16 @@ namespace Business.Query
             return new ApiResponse<List<DemandResponse>>(mappedList);
         }
 
+        // Bütün Aktif Taleplerin arasından Talep numarası ile alınması
         public async Task<ApiResponse<DemandResponse>> Handle(GetDemandByIdQuery request, CancellationToken cancellationToken)
         {
             var entity = await dbContext.Set<Demand>()
-                //to do DemandNumber olacak.
-                .FirstOrDefaultAsync(x => x.DemandId == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(x => x.DemandNumber == request.Id, cancellationToken);
             var mapped = mapper.Map<Demand, DemandResponse>(entity);
             return new ApiResponse<DemandResponse>(mapped);
         }
 
-        //personel taleplerini filtrelemeli
+        // Taleplerin kullanıcı tarafından filtrelenmesi
         public async Task<ApiResponse<List<DemandResponse>>> Handle(GetDemandByParameterQuery request, CancellationToken cancellationToken)
         {
             var list = await dbContext.Set<Demand>()
@@ -71,6 +75,7 @@ namespace Business.Query
             return new ApiResponse<List<DemandResponse>>(mappedList);
         }
 
+        // Personelin taleplerinin alınması
         public async Task<ApiResponse<List<DemandResponse>>> Handle(GetEmployeeDemandQuery request, CancellationToken cancellationToken)
         {
             var list = await dbContext.Set<Demand>()

@@ -7,6 +7,7 @@ using WebAPI.Entity;
 
 namespace Data.Entity
 {
+    // Role entityleri
     public class Role
     {
         public int Id { get; set; }

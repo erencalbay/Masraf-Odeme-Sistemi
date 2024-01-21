@@ -16,14 +16,17 @@ namespace WebAPI.Controllers
     [Authorize]
     public class UserControllers : ControllerBase
     {
+        //Dependency injection
         private readonly IMediator mediator;
         public UserControllers(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
+
+        // Kullanıcıların hepsini getirme
         [HttpGet]
-        public async Task<ApiResponse<List<UserResponse>>> Get()
+        public async Task<ApiResponse<List<UserResponse>>> GetAllEmployees()
         {
             var opr = new GetAllUserQuery();
             var result = await mediator.Send(opr);
@@ -31,17 +34,19 @@ namespace WebAPI.Controllers
             
         }
 
+        // Kullanıcıları usernumber'a göre getirme
         [HttpGet]
-        [Route("Index")]
-        public async Task<ApiResponse<UserResponse>> Get(int UserNumber)
+        [Route("GetEmployeeWithID")]
+        public async Task<ApiResponse<UserResponse>> GetEmployeeWithID(int UserNumber)
         {
             var operation = new GetUserByIdQuery(UserNumber);
             var result = await mediator.Send(operation);
             return result;
         }
 
+        // Kullanıcılar admin tarafından oluşturulacak
         [HttpPost]
-        public async Task<ApiResponse<UserResponse>> CreatePersonel([FromBody] UserRequest user)
+        public async Task<ApiResponse<UserResponse>> CreateEmployee([FromBody] UserRequest user)
         {
             var operation = new CreateUserCommand(user);
             var result = await mediator.Send(operation);
@@ -49,7 +54,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ApiResponse> Put(int UserNumber, [FromBody] UserRequest user)
+        public async Task<ApiResponse> UpdateEmployee(int UserNumber, [FromBody] UserRequest user)
         {
             var operation = new UpdateUserCommand(UserNumber, user);
             var result = await mediator.Send(operation);
@@ -57,7 +62,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete]
-        public async Task<ApiResponse> Delete(int UserNumber)
+        public async Task<ApiResponse> DeleteEmployee(int UserNumber)
         {
             var operation = new DeleteUserCommand(UserNumber); 
             var result = await mediator.Send(operation);

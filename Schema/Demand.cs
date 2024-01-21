@@ -13,6 +13,7 @@ using WebAPI.Entity;
 
 namespace Schema
 {
+    // Demand DTO'ları 
     public class DemandRequest : BaseRequest
     {
         [JsonIgnore]

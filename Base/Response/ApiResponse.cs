@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Base.Response
 {
+    // Genel bir repsonse, bütün responselarda dönecek değerleri içeriyor. generic ve sabit olmak üzere ikiye ayırdık
+
+    // Sabit ApiResponse
     public class ApiResponse
     {
         public override string ToString()
@@ -33,6 +36,7 @@ namespace Base.Response
     }
 
 
+    // Generic ApiResponse
     public class ApiResponse<T>
     {
         public DateTime ServerDate { get; set; } = DateTime.UtcNow;

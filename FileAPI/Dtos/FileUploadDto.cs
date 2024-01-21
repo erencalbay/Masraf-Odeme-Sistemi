@@ -2,7 +2,7 @@
 
 namespace FileAPI.Dtos
 {
-
+    // Data transfer objectleri
     public class FileUploadDto : FileUploadRequest
     {
         public int UserNumber { get; set; }

@@ -10,6 +10,7 @@ namespace Business.Validator
 {
     public class DemandValidator : AbstractValidator<DemandRequest>
     {
+        // Taleplerin validasyonu
         public DemandValidator()
         {
             RuleFor(x => x.UserNumber).NotEmpty().ExclusiveBetween(6,8);

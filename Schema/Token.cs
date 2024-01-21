@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Schema
 {
+    // Token dtoları
     public class Token
     {
         //access and refresh for classic arch identity

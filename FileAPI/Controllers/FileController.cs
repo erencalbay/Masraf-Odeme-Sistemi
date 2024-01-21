@@ -14,6 +14,8 @@ namespace FileAPI.Controllers
     [Authorize(Roles = "employee")]
     public class FileController : ControllerBase
     {
+
+        // Dependency Injection
         private readonly FileUploadAPIService _fileUploadAPIService;
         private readonly IPublishEndpoint _publishEndpoint;
         public FileController(FileUploadAPIService fileUploadAPIService, IPublishEndpoint publishEndpoint)
@@ -22,8 +24,10 @@ namespace FileAPI.Controllers
             _publishEndpoint = publishEndpoint;
         }
 
+
+        // Kullanıcı işin masraf girişi (talep açma)
         [HttpPost]
-        public async Task<IActionResult> Upload([FromQuery] FileUploadRequest fileUploadRequest)
+        public async Task<IActionResult> ExpenseEntryFromEmployee([FromQuery] FileUploadRequest fileUploadRequest)
         {
             fileUploadRequest.Receipts = Request.Form.Files;
             var result = await _fileUploadAPIService.UploadAsync("Receipts", fileUploadRequest.Receipts);

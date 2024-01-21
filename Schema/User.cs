@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Schema
 {
+    // Kullanıcı için DTOlar
     public class UserRequest : BaseRequest
     {
         [JsonIgnore]

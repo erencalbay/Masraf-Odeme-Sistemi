@@ -29,8 +29,7 @@ using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// FluentValidation konfigurasyonu
 builder.Services.AddControllers().AddFluentValidation(x =>
 {
     x.RegisterValidatorsFromAssemblyContaining<CreateUserValidator>();
@@ -39,6 +38,7 @@ builder.Services.AddControllers().AddFluentValidation(x =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+// RabbitMQ konfigurasyonu
 builder.Services.AddMassTransit(configure =>
 {
     configure.AddConsumer<ReceiptsEventConsumer>();
@@ -52,6 +52,7 @@ builder.Services.AddMassTransit(configure =>
     });
 });
 
+// Swagger configurasyonu, APIlere eriþmek ve token iþlemler için
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Expense API", Version = "v1" });
@@ -80,25 +81,26 @@ builder.Services.AddSwaggerGen(option =>
     });
 }); 
 
+
+// Dbcontext tanýmýnýn yapýlmasý ve db baðlanmasý
 builder.Services.AddDbContext<VdDbContext>(options => options.UseNpgsql(Configuration.ConnectionString));
+
+// Mediatr konfigurasyonu
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(VbTransferCommand).GetTypeInfo().Assembly));
     
+// Mapper konfigurasyonu 
 var mapperConf = new MapperConfiguration(cfg => cfg.AddProfile(new MapperConfig()));
 builder.Services.AddSingleton(mapperConf.CreateMapper());
 
+// Auth ve token servislerinin implemantasyonu
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
+// Log file'ýn yaratýlmasý ve kullanýlmasýnýn konfigurasyonu
 var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(config).CreateLogger();
 Log.Information("App server is starting");
 builder.Host.UseSerilog();
-
-builder.Services.AddStackExchangeRedisCache(action =>
-{
-    action.Configuration = "localhost:6379";
-});
-
 builder.Services.Configure<CustomTokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<CustomTokenOptions>();
 builder.Services.AddAuthentication(options =>
@@ -126,7 +128,11 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
+// Redis konfigurasyonu
+builder.Services.AddStackExchangeRedisCache(action =>
+{
+    action.Configuration = "localhost:6379";
+});
 
 var app = builder.Build();
 

@@ -27,36 +27,44 @@ namespace Data.DbContextCon
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         public DbSet<Role> Roles { get; set; }
 
-
+        // Migration kurulduğunda.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new DemandConfiguration());
             modelBuilder.ApplyConfiguration(new InfoConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
+
+            // Keylerin verilmesi
             modelBuilder.Entity<UserRefreshToken>().HasKey(urt => urt.UserId);
 
             modelBuilder.Entity<UserRefreshToken>().HasOne(urt => urt.User).WithOne(u => u.UserRefreshToken)
                 .HasForeignKey<UserRefreshToken>(urt => urt.UserId);
 
+            // Başlangıçta oluşması için rol verileri
+
             modelBuilder.Entity<Role>().HasData(new List<Role>() { 
                 new Role { Id = 1, Name = "admin"},
                 new Role { Id = 2, Name = "employee"}});
 
-            modelBuilder.Entity<RoleUser>().HasKey(ky => new { ky.RoleId, ky.UserNumber});       
+            modelBuilder.Entity<RoleUser>().HasKey(ky => new { ky.RoleId, ky.UserNumber});
+            // Başlangıçta oluşması için rol userlar verileri
+
             modelBuilder.Entity<RoleUser>().HasData(new List<RoleUser>()
             {
                 new RoleUser { UserNumber = 112233, RoleId = 1 },
                 new RoleUser { UserNumber = 445566, RoleId = 2 }
             });
 
-            
+            // Başlangıçta oluşması için seed talep verileri
             modelBuilder.Entity<Demand>().HasData(new List<Demand>()
             {
                 new Demand { DemandId = 1, DemandNumber = 111111, Description = "Talep 1", isActive = true, UserNumber = 445566, Receipt = "Receipts/Mavi.jpg"},
                 new Demand { DemandId = 2, DemandNumber = 222222, Description = "Talep 2", isActive = false, UserNumber = 445566, Receipt = "Receipts/Kırmızı.jpg"}
             });
-            
+
+            // Başlangıçta oluşması için seed info verileri
+
             modelBuilder.Entity<Info>().HasData(new List<Info>()
             {
                 new Info { InfoId = 1, IBAN = "TR760009901234567800100001", InfoNumber = 452134, isActive = false, isDefault = true, UserNumber= 445566, Information = "Aktif Olan Banka Hesabı", InfoType = "Ana Hesap"},

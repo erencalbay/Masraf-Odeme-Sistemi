@@ -11,6 +11,7 @@ namespace Business.Validator
 {
     public class DemandRequestAdminValidator : AbstractValidator<DemandRequestFromAdmin>
     {
+        // Talep requestin validasyonu
         public DemandRequestAdminValidator()
         {
             RuleFor(x => x.Amount).GreaterThanOrEqualTo(0).WithMessage("Amount cannot be null");

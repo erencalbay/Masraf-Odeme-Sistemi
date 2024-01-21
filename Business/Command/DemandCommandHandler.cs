@@ -25,6 +25,8 @@ namespace Business.Command
     IRequestHandler<DeleteDemandCommand, ApiResponse>
 
     {
+
+        // dependency injection
         private readonly VdDbContext dbContext;
         private readonly IMapper mapper;
 
@@ -34,38 +36,14 @@ namespace Business.Command
             this.mapper = mapper;
         }
 
-        //old demand create
-        /*
-        public async Task<ApiResponse<DemandResponse>> Handle(CreateDemandCommand request, CancellationToken cancellationToken)
-        {
-            var demandNumber = new Random().Next(1000000, 9999999);
-            var checkDemandNumber = await dbContext.Set<Demand>().Where(x => x.DemandNumber == demandNumber)
-            .FirstOrDefaultAsync(cancellationToken);
-
-            if (checkDemandNumber != null)
-            {
-                Handle(request, cancellationToken);
-            }
-            var entity = mapper.Map<DemandRequest, Demand>(request.Model);
-            entity.DemandNumber = demandNumber;
-            entity.DemandResponseType = DemandResponseType.Pending;
-            //entity.Receipt = receipt;
-
-            Log.Information($"Demand is with Number: {demandNumber} created by {request.Model.UserNumber}");
-
-            var entityResult = await dbContext.AddAsync(entity);
-            await dbContext.SaveChangesAsync(cancellationToken);
-            var mapped = mapper.Map<Demand, DemandResponse>(entityResult.Entity);
-
-            return new ApiResponse<DemandResponse>(mapped);
-        }
-        */
-
+        // Talep Güncelleme işlemi
         public async Task<ApiResponse> Handle(UpdateDemandCommandFromUser request, CancellationToken cancellationToken)
         {
+            // Talebin db'den alınması
             var fromdb = await dbContext.Set<Demand>().Where(x => x.DemandNumber == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
+            // Talebin varlığının kontrol edilmesi
             if (fromdb == null)
             {
                 var message = "Record Not Found";
@@ -73,16 +51,22 @@ namespace Business.Command
                 return new ApiResponse(message);
             }
 
+            // Güncellenen değerlerleverinin güncellenmesi ve save edilmesi
             fromdb.Description = request.Model.Description;
             fromdb.DemandResponseType = DemandResponseType.Pending;
             await dbContext.SaveChangesAsync(cancellationToken);
             return new ApiResponse();
         }
 
+        // Talebe Cevap Verme
         public async Task<ApiResponse> Handle(ResponseDemandCommandFromAdmin request, CancellationToken cancellationToken)
         {
+            // Talebin alınması
+
             var fromdb = await dbContext.Set<Demand>().Where(x => x.DemandNumber == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
+
+            // Cevap verilecek kayıt yoksa hata verir
 
             if (fromdb == null)
             {
@@ -90,24 +74,29 @@ namespace Business.Command
                 Log.Error(message);
                 return new ApiResponse(message);
             }
+
+            // Request ile gelen değerlerin atanması 
 
             fromdb.RejectionResponse = request.Model.RejectionResponse;
             fromdb.DemandResponseType = request.Model.DemandResponseType;
             fromdb.isActive = false;
             
+            // Eğer talep onaylanırsa eft ile info'ya erişilecek ve iban yoluyla miktar yatırılacak
             if (fromdb.DemandResponseType == DemandResponseType.Approval)
             {
                 EftPaymentService eftPaymentService = new EftPaymentService(dbContext);
                 eftPaymentService.PaymentAfterApproval(request);
             }
-            // todo: eğer demandtype approval ise if durumuyla eft yollanacak
 
+            // Her şey okeyse save edilmesi.
             await dbContext.SaveChangesAsync(cancellationToken);
             return new ApiResponse();
         }
 
+        // Talebi Silme
         public async Task<ApiResponse> Handle(DeleteDemandCommand request, CancellationToken cancellationToken)
         {
+            // Talebin database'den alınması ve varlığının kontrol edilmesi
             var fromdb = await dbContext.Set<Demand>().Where(x => x.DemandNumber == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
@@ -116,7 +105,7 @@ namespace Business.Command
                 Log.Error(message);
                 return new ApiResponse(message);
             }
-            //dbContext.Set<User>().Remove(fromdb);
+            // Talebi deactive etme ve save edilmesi.
             fromdb.isActive = false;
             await dbContext.SaveChangesAsync(cancellationToken);
             return new ApiResponse();

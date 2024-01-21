@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Base.Entity
 {
+    // Bütün entitylerde olacak ortak proplar'ı abstract olarak tanımladık.
     public abstract class BaseEntity
     {
         public int InsertUserNumber { get; set; }

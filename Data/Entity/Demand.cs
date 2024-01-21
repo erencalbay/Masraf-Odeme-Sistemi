@@ -14,6 +14,7 @@ using WebAPI.Entity;
 
 namespace Data.Entity
 {
+    // Talep entitiyleri
     [Table("Demand")]
     public class Demand : BaseEntity
     {
@@ -28,6 +29,7 @@ namespace Data.Entity
     }
 }
 
+// Talepler için DB validasyon ve bağlantı işlemleri 
 public class DemandConfiguration : IEntityTypeConfiguration<Demand>
 {
     public void Configure(EntityTypeBuilder<Demand> builder)

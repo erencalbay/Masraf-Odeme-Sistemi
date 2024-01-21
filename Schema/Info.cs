@@ -3,6 +3,7 @@ using WebAPI.Entity;
 
 namespace Schema;
 
+// Info DTO'ları 
 public class InfoRequest : BaseRequest
 {
     public int UserNumber { get; set; }

@@ -8,6 +8,8 @@ namespace WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+
+        // Dependency injection.
         private readonly IAuthenticationService _authenticationService;
 
         public AuthController(IAuthenticationService authenticationService)
@@ -15,6 +17,7 @@ namespace WebAPI.Controllers
             _authenticationService = authenticationService;
         }
 
+        // Kullanıcıdan login istenmesi ve token verilmesi
         [HttpPost]
         public async Task<IActionResult> LoginToken(Login loginDto)
         {
@@ -23,6 +26,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        // Tokenın yenilenmesi için token verilmesi
         [HttpPost]
         public async Task<IActionResult> CreateTokenByRefreshToken(RefreshTokenDto refreshTokenDto)
         {

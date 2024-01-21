@@ -11,6 +11,7 @@ namespace Business.Validator
 {
     public class CreateUserValidator : AbstractValidator<UserRequest>
     {
+        // Kullanıcının oluşturulması validasyonu
         public CreateUserValidator()
         {
             RuleFor(x => x.FirstName).NotEmpty().MaximumLength(30).MinimumLength(2).WithName("User firstname");

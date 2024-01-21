@@ -12,6 +12,7 @@ namespace Business.Mapper
 {
     public class MapperConfig : Profile
     {
+        // Mapleme işlemi entityler için.
         public MapperConfig()
         {
             CreateMap<UserRequest, User>();
