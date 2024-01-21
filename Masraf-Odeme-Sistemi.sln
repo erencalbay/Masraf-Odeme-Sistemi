@@ -12,9 +12,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base", "Base\Base.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{6ED92420-5C38-4495-A6B9-E4A09F89D308}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{CC774C78-0C45-431B-863B-AACFBB2C91C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{CC774C78-0C45-431B-863B-AACFBB2C91C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schema", "Schema\Schema.csproj", "{E53CF463-DAEC-485B-8CFB-C55D06288AAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schema", "Schema\Schema.csproj", "{E53CF463-DAEC-485B-8CFB-C55D06288AAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileAPI", "FileAPI\FileAPI.csproj", "{ACDEEE7E-D9C7-4975-A651-C3AE64632AAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 		{E53CF463-DAEC-485B-8CFB-C55D06288AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E53CF463-DAEC-485B-8CFB-C55D06288AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E53CF463-DAEC-485B-8CFB-C55D06288AAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACDEEE7E-D9C7-4975-A651-C3AE64632AAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACDEEE7E-D9C7-4975-A651-C3AE64632AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACDEEE7E-D9C7-4975-A651-C3AE64632AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACDEEE7E-D9C7-4975-A651-C3AE64632AAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

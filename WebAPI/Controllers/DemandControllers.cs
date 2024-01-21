@@ -72,7 +72,7 @@ namespace WebAPI.Controllers
         }
         // PERSONEL KULLANACAK talep oluşturacak
         [HttpPost]
-        public async Task<ApiResponse<DemandResponse>> ExpenseEntryFromEmployee([FromQuery] Deneme Demand)
+        public async Task<ApiResponse<DemandResponse>> ExpenseEntryFromEmployee([FromQuery] DemandRequest Demand)
         {
             var userNumber = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Value;
             var operation = new CreateDemandCommand(new DemandRequest { Description = Demand.Description, Receipt = Demand.Receipt, UserNumber = int.Parse(userNumber) });
