@@ -65,7 +65,7 @@ namespace Business.Query
                 .Where(x =>
                 x.Description.Contains(request.Description) ||
                 x.DemandNumber.ToString().Contains(request.DemandNumber.ToString()) ||
-                x.DemandType.Equals(request.DemandType)
+                x.DemandResponseType.Equals(request.DemandType)
                 ).ToListAsync(cancellationToken);
             var mappedList = mapper.Map<List<Demand>, List<DemandResponse>>(list);
             return new ApiResponse<List<DemandResponse>>(mappedList);
