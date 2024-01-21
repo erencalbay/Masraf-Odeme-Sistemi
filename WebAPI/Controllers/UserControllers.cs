@@ -13,7 +13,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public class UserControllers : ControllerBase
     {
         private readonly IMediator mediator;
@@ -32,6 +32,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("Index")]
         public async Task<ApiResponse<UserResponse>> Get(int UserNumber)
         {
             var operation = new GetUserByIdQuery(UserNumber);

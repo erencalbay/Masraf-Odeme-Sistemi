@@ -26,6 +26,7 @@ namespace WebAPI.Controllers
         }
         // ADMİN KULLANACAK VE TÜM TALEPLERİ GÖRECEK
         [HttpGet]
+        [ActionName("GetAllActiveDemand")]
         [Authorize(Roles = "admin")]
         public async Task<ApiResponse<List<DemandResponse>>> GetAllActiveDemand()
         {
