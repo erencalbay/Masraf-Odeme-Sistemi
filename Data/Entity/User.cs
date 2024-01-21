@@ -55,6 +55,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(x => x.IdentityNumber).IsUnique(true);
 
+        builder.HasData(new List<User> { 
+            new User { UserNumber = 445566, DateOfBirth = DateTime.UtcNow.AddYears(-20), Email = "erencalbay@gmail.com", FirstName = "Eren", LastName = "Çalbay", Roles = new List<Role>(), IdentityNumber = "44332211002"},
+            new User { UserNumber = 112233, DateOfBirth = DateTime.UtcNow.AddYears(-15), Email = "ahmetkızılkaya@gmail.com", FirstName = "Ahmet", LastName = "Kızılkaya", Roles = new List<Role>(), IdentityNumber = "34332211002"}});
+
         builder.HasMany(x => x.Demands)
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserNumber)

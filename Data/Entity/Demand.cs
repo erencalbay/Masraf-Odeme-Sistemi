@@ -45,6 +45,9 @@ public class DemandConfiguration : IEntityTypeConfiguration<Demand>
         builder.Property(x => x.isActive).IsRequired(true).HasDefaultValue(true);
         builder.Property(x => x.DemandResponseType).IsRequired(true);
         builder.Property(x => x.RejectionResponse).IsRequired(false);
+
+        builder.HasData(new List<Demand> {
+        });
     
         builder.HasIndex(x => x.UserNumber);
     }

@@ -12,7 +12,8 @@ namespace Business.Validator
     {
         public DemandValidator()
         {
-            RuleFor(x => x.Description).NotEmpty();
+            RuleFor(x => x.UserNumber).NotEmpty().ExclusiveBetween(6,8);
+            RuleFor(x => x.Description).NotEmpty().WithMessage("Description of the Demand");
         }
     }
 }
