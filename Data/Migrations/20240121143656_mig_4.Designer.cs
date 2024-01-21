@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(VdDbContext))]
-    [Migration("20240121022720_init")]
-    partial class init
+    [Migration("20240121143656_mig_4")]
+    partial class mig_4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,30 @@ namespace Data.Migrations
                     b.HasIndex("UserNumber");
 
                     b.ToTable("Demand");
+
+                    b.HasData(
+                        new
+                        {
+                            DemandId = 1,
+                            DemandNumber = 111111,
+                            DemandResponseType = 0,
+                            Description = "Talep 1",
+                            InsertDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserNumber = 0,
+                            UserNumber = 445566,
+                            isActive = true
+                        },
+                        new
+                        {
+                            DemandId = 2,
+                            DemandNumber = 222222,
+                            DemandResponseType = 0,
+                            Description = "Talep 2",
+                            InsertDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserNumber = 0,
+                            UserNumber = 445566,
+                            isActive = false
+                        });
                 });
 
             modelBuilder.Entity("Data.Entity.Info", b =>
@@ -135,6 +159,34 @@ namespace Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Info");
+
+                    b.HasData(
+                        new
+                        {
+                            InfoId = 1,
+                            IBAN = "TR760009901234567800100001",
+                            InfoNumber = 452134,
+                            InfoType = "Ana Hesap",
+                            Information = "Aktif Olan Banka Hesabı",
+                            InsertDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserNumber = 0,
+                            UserNumber = 445566,
+                            isActive = false,
+                            isDefault = true
+                        },
+                        new
+                        {
+                            InfoId = 2,
+                            IBAN = "TR760009901234567800100002",
+                            InfoNumber = 652134,
+                            InfoType = "Yan Hesap",
+                            Information = "Banka Hesabı 2",
+                            InsertDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserNumber = 0,
+                            UserNumber = 445566,
+                            isActive = false,
+                            isDefault = false
+                        });
                 });
 
             modelBuilder.Entity("Data.Entity.Role", b =>
@@ -166,6 +218,33 @@ namespace Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Data.Entity.RoleUser", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserNumber")
+                        .HasColumnType("integer");
+
+                    b.HasKey("RoleId", "UserNumber");
+
+                    b.HasIndex("UserNumber");
+
+                    b.ToTable("RoleUser");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            UserNumber = 112233
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            UserNumber = 445566
+                        });
+                });
+
             modelBuilder.Entity("Data.Entity.UserRefreshToken", b =>
                 {
                     b.Property<int>("UserId")
@@ -181,21 +260,6 @@ namespace Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("UserRefreshTokens");
-                });
-
-            modelBuilder.Entity("RoleUser", b =>
-                {
-                    b.Property<int>("RolesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UsersUserNumber")
-                        .HasColumnType("integer");
-
-                    b.HasKey("RolesId", "UsersUserNumber");
-
-                    b.HasIndex("UsersUserNumber");
-
-                    b.ToTable("RoleUser");
                 });
 
             modelBuilder.Entity("WebAPI.Entity.User", b =>
@@ -260,7 +324,7 @@ namespace Data.Migrations
                         new
                         {
                             UserNumber = 445566,
-                            DateOfBirth = new DateTime(2004, 1, 21, 2, 27, 20, 280, DateTimeKind.Utc).AddTicks(1942),
+                            DateOfBirth = new DateTime(2004, 1, 21, 14, 36, 55, 940, DateTimeKind.Utc).AddTicks(6992),
                             Email = "erencalbay@gmail.com",
                             FirstName = "Eren",
                             IdentityNumber = "44332211002",
@@ -273,7 +337,7 @@ namespace Data.Migrations
                         new
                         {
                             UserNumber = 112233,
-                            DateOfBirth = new DateTime(2009, 1, 21, 2, 27, 20, 280, DateTimeKind.Utc).AddTicks(1956),
+                            DateOfBirth = new DateTime(2009, 1, 21, 14, 36, 55, 940, DateTimeKind.Utc).AddTicks(7011),
                             Email = "ahmetkızılkaya@gmail.com",
                             FirstName = "Ahmet",
                             IdentityNumber = "34332211002",
@@ -307,6 +371,25 @@ namespace Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Data.Entity.RoleUser", b =>
+                {
+                    b.HasOne("Data.Entity.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Entity.User", "User")
+                        .WithMany("Roles")
+                        .HasForeignKey("UserNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Data.Entity.UserRefreshToken", b =>
                 {
                     b.HasOne("WebAPI.Entity.User", "User")
@@ -318,19 +401,9 @@ namespace Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RoleUser", b =>
+            modelBuilder.Entity("Data.Entity.Role", b =>
                 {
-                    b.HasOne("Data.Entity.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebAPI.Entity.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersUserNumber")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("WebAPI.Entity.User", b =>
@@ -338,6 +411,8 @@ namespace Data.Migrations
                     b.Navigation("Demands");
 
                     b.Navigation("Infos");
+
+                    b.Navigation("Roles");
 
                     b.Navigation("UserRefreshToken")
                         .IsRequired();

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(VdDbContext))]
-    [Migration("20240121121107_mig_2")]
-    partial class mig_2
+    [Migration("20240121140002_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -272,7 +272,7 @@ namespace Data.Migrations
                         new
                         {
                             UserNumber = 445566,
-                            DateOfBirth = new DateTime(2004, 1, 21, 12, 11, 7, 136, DateTimeKind.Utc).AddTicks(1571),
+                            DateOfBirth = new DateTime(2004, 1, 21, 14, 0, 2, 606, DateTimeKind.Utc).AddTicks(8066),
                             Email = "erencalbay@gmail.com",
                             FirstName = "Eren",
                             IdentityNumber = "44332211002",
@@ -285,7 +285,7 @@ namespace Data.Migrations
                         new
                         {
                             UserNumber = 112233,
-                            DateOfBirth = new DateTime(2009, 1, 21, 12, 11, 7, 136, DateTimeKind.Utc).AddTicks(1582),
+                            DateOfBirth = new DateTime(2009, 1, 21, 14, 0, 2, 606, DateTimeKind.Utc).AddTicks(8078),
                             Email = "ahmetkızılkaya@gmail.com",
                             FirstName = "Ahmet",
                             IdentityNumber = "34332211002",

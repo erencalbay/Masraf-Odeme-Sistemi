@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(VdDbContext))]
-    [Migration("20240121120637_init")]
-    partial class init
+    [Migration("20240121140311_mg_2")]
+    partial class mg_2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,6 +75,30 @@ namespace Data.Migrations
                     b.HasIndex("UserNumber");
 
                     b.ToTable("Demand");
+
+                    b.HasData(
+                        new
+                        {
+                            DemandId = 1,
+                            DemandNumber = 111111,
+                            DemandResponseType = 0,
+                            Description = "Talep 1",
+                            InsertDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserNumber = 0,
+                            UserNumber = 112233,
+                            isActive = true
+                        },
+                        new
+                        {
+                            DemandId = 2,
+                            DemandNumber = 111111,
+                            DemandResponseType = 0,
+                            Description = "Talep 1",
+                            InsertDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserNumber = 0,
+                            UserNumber = 112233,
+                            isActive = true
+                        });
                 });
 
             modelBuilder.Entity("Data.Entity.Info", b =>
@@ -179,6 +203,18 @@ namespace Data.Migrations
                     b.HasIndex("UserNumber");
 
                     b.ToTable("RoleUser");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            UserNumber = 112233
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            UserNumber = 445566
+                        });
                 });
 
             modelBuilder.Entity("Data.Entity.UserRefreshToken", b =>
@@ -260,7 +296,7 @@ namespace Data.Migrations
                         new
                         {
                             UserNumber = 445566,
-                            DateOfBirth = new DateTime(2004, 1, 21, 12, 6, 36, 918, DateTimeKind.Utc).AddTicks(3480),
+                            DateOfBirth = new DateTime(2004, 1, 21, 14, 3, 11, 564, DateTimeKind.Utc).AddTicks(5053),
                             Email = "erencalbay@gmail.com",
                             FirstName = "Eren",
                             IdentityNumber = "44332211002",
@@ -273,7 +309,7 @@ namespace Data.Migrations
                         new
                         {
                             UserNumber = 112233,
-                            DateOfBirth = new DateTime(2009, 1, 21, 12, 6, 36, 918, DateTimeKind.Utc).AddTicks(3493),
+                            DateOfBirth = new DateTime(2009, 1, 21, 14, 3, 11, 564, DateTimeKind.Utc).AddTicks(5070),
                             Email = "ahmetkızılkaya@gmail.com",
                             FirstName = "Ahmet",
                             IdentityNumber = "34332211002",

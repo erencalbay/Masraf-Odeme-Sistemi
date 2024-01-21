@@ -8,18 +8,18 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class mig_2 : Migration
+    public partial class mg_2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
-                table: "RoleUser",
-                columns: new[] { "RoleId", "UserNumber" },
+                table: "Demand",
+                columns: new[] { "DemandId", "DemandNumber", "DemandResponseType", "Description", "InsertDate", "InsertUserNumber", "RejectionResponse", "UpdateDate", "UpdateUserNumber", "UserNumber", "isActive" },
                 values: new object[,]
                 {
-                    { 1, 112233 },
-                    { 2, 445566 }
+                    { 1, 111111, 0, "Talep 1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, null, null, 112233, true },
+                    { 2, 111111, 0, "Talep 1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, null, null, null, 112233, true }
                 });
 
             migrationBuilder.UpdateData(
@@ -27,42 +27,42 @@ namespace Data.Migrations
                 keyColumn: "UserNumber",
                 keyValue: 112233,
                 column: "DateOfBirth",
-                value: new DateTime(2009, 1, 21, 12, 11, 7, 136, DateTimeKind.Utc).AddTicks(1582));
+                value: new DateTime(2009, 1, 21, 14, 3, 11, 564, DateTimeKind.Utc).AddTicks(5070));
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "UserNumber",
                 keyValue: 445566,
                 column: "DateOfBirth",
-                value: new DateTime(2004, 1, 21, 12, 11, 7, 136, DateTimeKind.Utc).AddTicks(1571));
+                value: new DateTime(2004, 1, 21, 14, 3, 11, 564, DateTimeKind.Utc).AddTicks(5053));
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(
-                table: "RoleUser",
-                keyColumns: new[] { "RoleId", "UserNumber" },
-                keyValues: new object[] { 1, 112233 });
+                table: "Demand",
+                keyColumn: "DemandId",
+                keyValue: 1);
 
             migrationBuilder.DeleteData(
-                table: "RoleUser",
-                keyColumns: new[] { "RoleId", "UserNumber" },
-                keyValues: new object[] { 2, 445566 });
+                table: "Demand",
+                keyColumn: "DemandId",
+                keyValue: 2);
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "UserNumber",
                 keyValue: 112233,
                 column: "DateOfBirth",
-                value: new DateTime(2009, 1, 21, 12, 6, 36, 918, DateTimeKind.Utc).AddTicks(3493));
+                value: new DateTime(2009, 1, 21, 14, 0, 2, 606, DateTimeKind.Utc).AddTicks(8078));
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "UserNumber",
                 keyValue: 445566,
                 column: "DateOfBirth",
-                value: new DateTime(2004, 1, 21, 12, 6, 36, 918, DateTimeKind.Utc).AddTicks(3480));
+                value: new DateTime(2004, 1, 21, 14, 0, 2, 606, DateTimeKind.Utc).AddTicks(8066));
         }
     }
 }

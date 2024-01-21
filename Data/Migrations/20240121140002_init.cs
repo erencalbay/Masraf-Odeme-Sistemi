@@ -163,8 +163,17 @@ namespace Data.Migrations
                 columns: new[] { "UserNumber", "DateOfBirth", "Email", "FirstName", "IdentityNumber", "InsertDate", "InsertUserNumber", "LastActivityDate", "LastName", "UpdateDate", "UpdateUserNumber" },
                 values: new object[,]
                 {
-                    { 112233, new DateTime(2009, 1, 21, 12, 6, 36, 918, DateTimeKind.Utc).AddTicks(3493), "ahmetkızılkaya@gmail.com", "Ahmet", "34332211002", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kızılkaya", null, null },
-                    { 445566, new DateTime(2004, 1, 21, 12, 6, 36, 918, DateTimeKind.Utc).AddTicks(3480), "erencalbay@gmail.com", "Eren", "44332211002", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Çalbay", null, null }
+                    { 112233, new DateTime(2009, 1, 21, 14, 0, 2, 606, DateTimeKind.Utc).AddTicks(8078), "ahmetkızılkaya@gmail.com", "Ahmet", "34332211002", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kızılkaya", null, null },
+                    { 445566, new DateTime(2004, 1, 21, 14, 0, 2, 606, DateTimeKind.Utc).AddTicks(8066), "erencalbay@gmail.com", "Eren", "44332211002", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Çalbay", null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RoleUser",
+                columns: new[] { "RoleId", "UserNumber" },
+                values: new object[,]
+                {
+                    { 1, 112233 },
+                    { 2, 445566 }
                 });
 
             migrationBuilder.CreateIndex(
