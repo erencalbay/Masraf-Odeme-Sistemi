@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Enum
+namespace Data.Entity
 {
-    public enum DemandType
+    public class PaymentCategory
     {
-        Approval,
-        Denial,
-        Pending
+
     }
 }

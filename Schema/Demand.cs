@@ -31,13 +31,14 @@ namespace Schema
         public string Description { get; set; }
         public int DemandNumber { get; set; }
         public IFormFile Receipt { get; set; }
-        public DemandType DemandType { get; set; }
+        public DemandResponseType DemandResponseType { get; set; }
         public string RejectionResponse { get; set; }
     }
     public class DemandRequestFromAdmin : BaseRequest
     {
         public int UserNumber { get; set; }
-        public DemandType DemandType { get; set; }
+        public double? Amount { get; set; }
+        public DemandResponseType DemandResponseType { get; set; }
         public string RejectionResponse { get; set; }
     }
 
@@ -48,7 +49,7 @@ namespace Schema
         public string Description { get; set; }
         public int DemandNumber { get; set; }
         public IFormFile Receipt { get; set; }
-        public DemandType DemandType { get; set; }
+        public DemandResponseType DemandResponseType { get; set; }
         public string RejectionResponse { get; set; }
     }
 }

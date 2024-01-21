@@ -64,7 +64,7 @@ namespace WebAPI.Controllers
             return result;
         }
         [HttpGet]
-        public async Task<ApiResponse<List<DemandResponse>>> GetDemandsWithFiltering(string? Description, int? DemandNumber, DemandType? DemandType)
+        public async Task<ApiResponse<List<DemandResponse>>> GetDemandsWithFiltering(string? Description, int? DemandNumber, DemandResponseType? DemandType)
         {
             var opr = new GetDemandByParameterQuery(Description, DemandNumber, DemandType);
             var result = await mediator.Send(opr);

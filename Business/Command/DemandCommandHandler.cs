@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Base.Response;
 using Business.CQRS;
+using Business.Services.EftPaymentService;
 using Business.Services.FileUploadService;
 using Data.DbContextCon;
 using Data.Entity;
@@ -47,7 +48,7 @@ namespace Business.Command
             var receipt = await FileUploadService.WriteFile(request.Model.Receipt);
             var entity = mapper.Map<DemandRequest, Demand>(request.Model);
             entity.DemandNumber = demandNumber;
-            entity.DemandType = DemandType.Pending;
+            entity.DemandResponseType = DemandResponseType.Pending;
             //entity.Receipt = receipt;
 
             Log.Information($"Demand is with Number: {demandNumber} created by {request.Model.UserNumber}");
@@ -72,7 +73,7 @@ namespace Business.Command
             }
 
             fromdb.Description = request.Model.Description;
-            fromdb.DemandType = DemandType.Pending;
+            fromdb.DemandResponseType = DemandResponseType.Pending;
             await dbContext.SaveChangesAsync(cancellationToken);
             return new ApiResponse();
         }
@@ -90,9 +91,14 @@ namespace Business.Command
             }
 
             fromdb.RejectionResponse = request.Model.RejectionResponse;
-            fromdb.DemandType = request.Model.DemandType;
+            fromdb.DemandResponseType = request.Model.DemandResponseType;
             fromdb.isActive = false;
-
+            
+            if (fromdb.DemandResponseType == DemandResponseType.Approval)
+            {
+                EftPaymentService eftPaymentService = new EftPaymentService(dbContext);
+                eftPaymentService.PaymentAfterApproval(request);
+            }
             // todo: eğer demandtype approval ise if durumuyla eft yollanacak
 
             await dbContext.SaveChangesAsync(cancellationToken);

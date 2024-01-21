@@ -19,5 +19,5 @@ namespace Business.CQRS
     public record GetAllDemandQuery() : IRequest<ApiResponse<List<DemandResponse>>>;
     public record GetAllNotActiveDemandQuery() : IRequest<ApiResponse<List<DemandResponse>>>;
     public record GetDemandByIdQuery(int Id) : IRequest<ApiResponse<DemandResponse>>;
-    public record GetDemandByParameterQuery(string? Description, int? DemandNumber, DemandType? DemandType) : IRequest<ApiResponse<List<DemandResponse>>>;
+    public record GetDemandByParameterQuery(string? Description, int? DemandNumber, DemandResponseType? DemandType) : IRequest<ApiResponse<List<DemandResponse>>>;
 }

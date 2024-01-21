@@ -22,7 +22,7 @@ namespace Data.Entity
         public virtual User User { get; set; }
         public string Description { get; set; }
         public int DemandNumber { get; set; }
-        public DemandType DemandType { get; set; }
+        public DemandResponseType DemandResponseType { get; set; }
         public string RejectionResponse { get; set; }
     }
 }
@@ -43,7 +43,7 @@ public class DemandConfiguration : IEntityTypeConfiguration<Demand>
         builder.Property(x => x.UserNumber).IsRequired(true);
         builder.Property(x => x.Description).IsRequired(true).HasMaxLength(1000);
         builder.Property(x => x.isActive).IsRequired(true).HasDefaultValue(true);
-        builder.Property(x => x.DemandType).IsRequired(true);
+        builder.Property(x => x.DemandResponseType).IsRequired(true);
         builder.Property(x => x.RejectionResponse).IsRequired(false);
     
         builder.HasIndex(x => x.UserNumber);
