@@ -15,7 +15,7 @@ namespace Business.Validator
         public DemandRequestAdminValidator()
         {
             RuleFor(x => x.Amount).GreaterThanOrEqualTo(0).WithMessage("Amount cannot be null");
-            RuleFor(x => x.UserNumber).NotNull().InclusiveBetween(5, 7);
+            RuleFor(x => x.UserNumber).NotNull();
             RuleFor(x => x.RejectionResponse).MinimumLength(15).WithMessage("Must be lenght of digit bigger than 15").NotEmpty().WithMessage("It cant be null");
             RuleFor(x => x.DemandResponseType).IsInEnum().NotEmpty().WithMessage("Response type");
         }
