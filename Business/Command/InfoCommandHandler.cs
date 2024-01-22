@@ -61,7 +61,7 @@ namespace Business.Command
         public async Task<ApiResponse> Handle(UpdateInfoCommand request, CancellationToken cancellationToken)
         {
             //info var mı yok mu kontrolü
-            var fromdb = await dbContext.Set<Info>().Where(x => x.InfoNumber == request.Id)
+            var fromdb = await dbContext.Set<Info>().Where(x => x.InfoNumber == request.Model.InfoNumber)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (fromdb == null)

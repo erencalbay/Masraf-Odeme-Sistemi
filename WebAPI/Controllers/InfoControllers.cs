@@ -72,9 +72,9 @@ namespace WebAPI.Controllers
         // personel infosunu değiştirebilecek
         [Authorize(Roles = "employee")]
         [HttpPut]
-        public async Task<ApiResponse> InfoUpdate(int InfoId, [FromBody] InfoRequest info)
+        public async Task<ApiResponse> InfoUpdate([FromBody] InfoUpdateRequest info)
         {
-            var operation = new UpdateInfoCommand(InfoId, info);
+            var operation = new UpdateInfoCommand(info);
             var result = await mediator.Send(operation);
             return result;
         }

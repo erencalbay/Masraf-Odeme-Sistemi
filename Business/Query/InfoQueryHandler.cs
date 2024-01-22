@@ -57,8 +57,8 @@ namespace Business.Query
         {
             var list = await dbContext.Set<Info>()
                 .Where(x =>
-                x.IBAN.ToUpper().Contains(request.IBAN.ToUpper()) &&
-                x.InfoNumber.ToString().ToUpper().Contains(request.InfoNumber.ToString().ToUpper()) &&
+                x.IBAN.ToUpper().Contains(request.IBAN.ToUpper()) ||
+                x.InfoNumber.ToString().ToUpper().Contains(request.InfoNumber.ToString().ToUpper()) ||
                 x.Information.ToUpper().Contains(request.Information.ToUpper())
                 ).ToListAsync(cancellationToken);
             var mappedList = mapper.Map<List<Info>, List<InfoResponse>>(list);
