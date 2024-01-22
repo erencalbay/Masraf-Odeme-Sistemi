@@ -14,10 +14,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Fileuploadapiservice'in projeye eklenmesi
 builder.Services.AddScoped<FileUploadAPIService>();
 
-var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<CustomTokenOptions>();
-
+// RabbitMQ'nin eklenmesi
 builder.Services.AddMassTransit(configure =>
 {
     configure.UsingRabbitMq((context, configurator) =>
@@ -26,7 +27,7 @@ builder.Services.AddMassTransit(configure =>
     });
 });
 
-
+// Swagger konfigurasyonu, jwt ve görünüm için
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Expense API", Version = "v1" });
@@ -55,6 +56,10 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
+// Tokenoptions'un deðerinin appsettingsten alýnmasý
+var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<CustomTokenOptions>();
+
+// Auth serverýnýn eklenmesi
 builder.Services.AddAuthentication(options =>
 {
     //set Schema : "Bearer"
