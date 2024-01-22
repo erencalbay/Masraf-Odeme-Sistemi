@@ -31,9 +31,11 @@ namespace Business.Command
             this.mapper = mapper;
         }
 
+        // UserId verilmesi ile yeni bir personel info açılması
         public async Task<ApiResponse<InfoResponse>> Handle(CreateInfoCommand request, CancellationToken cancellationToken)
         {
             
+            // info duplicate number kontrolü
             var entity = mapper.Map<InfoRequest, Info>(request.Model);
 
             var infoNumber = new Random().Next(1000000, 9999999);
@@ -45,7 +47,8 @@ namespace Business.Command
                 Handle(request, cancellationToken);
             }
 
-            //entity.InfoNumber = infoNumber;
+            //info number ataması
+            entity.InfoNumber = infoNumber;
 
             var entityResult = await dbContext.AddAsync(entity, cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
@@ -54,8 +57,10 @@ namespace Business.Command
             return new ApiResponse<InfoResponse>(mapped);
         }
 
+        // Personelin infosunun güncellenmesi
         public async Task<ApiResponse> Handle(UpdateInfoCommand request, CancellationToken cancellationToken)
         {
+            //info var mı yok mu kontrolü
             var fromdb = await dbContext.Set<Info>().Where(x => x.InfoNumber == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -64,6 +69,7 @@ namespace Business.Command
                 return new ApiResponse("Record Not Found");
             }
 
+            //infonun yeni değerlerle güncellenmesi
             fromdb.Information = request.Model.Information;
             fromdb.IBAN = request.Model.IBAN;
             fromdb.isDefault = request.Model.isDefault;
@@ -73,15 +79,17 @@ namespace Business.Command
             return new ApiResponse();
         }
 
+        // Personelin infosunun deactive duruma çevrilmesi-silinmesi
         public async Task<ApiResponse> Handle(DeleteInfoCommand request, CancellationToken cancellationToken)
         {
+            // info var mı yok mu kontrolü
             var fromdb = await dbContext.Set<Info>().Where(x => x.InfoNumber == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
             if (fromdb == null)
             {
                 return new ApiResponse("Record Not Found");
             }
-            //dbContext.Set<User>().Remove(fromdb);
+            //infonun silinmek yerine deactive duruma çekilmesi
             fromdb.isActive = false;
             await dbContext.SaveChangesAsync(cancellationToken);
             return new ApiResponse();

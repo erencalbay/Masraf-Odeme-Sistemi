@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
     public class UserControllers : ControllerBase

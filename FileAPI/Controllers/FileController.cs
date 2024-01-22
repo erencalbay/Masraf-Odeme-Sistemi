@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace FileAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize(Roles = "employee")]
     public class FileController : ControllerBase

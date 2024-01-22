@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
         // personel infosunu ekleyebilecek  
         [HttpPost]
         [Authorize(Roles = "employee")]
-        public async Task<ApiResponse<InfoResponse>> Post([FromBody] InfoRequest info)
+        public async Task<ApiResponse<InfoResponse>> InfoCreate([FromBody] InfoRequest info)
         {
             var operation = new CreateInfoCommand(info);
             var result = await mediator.Send(operation);
@@ -72,7 +72,7 @@ namespace WebAPI.Controllers
         // personel infosunu değiştirebilecek
         [Authorize(Roles = "employee")]
         [HttpPut]
-        public async Task<ApiResponse> Put(int InfoId, [FromBody] InfoRequest info)
+        public async Task<ApiResponse> InfoUpdate(int InfoId, [FromBody] InfoRequest info)
         {
             var operation = new UpdateInfoCommand(InfoId, info);
             var result = await mediator.Send(operation);
@@ -82,7 +82,7 @@ namespace WebAPI.Controllers
         // admin infoları silebilecek
         [HttpDelete]
         [Authorize(Roles = "admin")]
-        public async Task<ApiResponse> Delete(int InfoId)
+        public async Task<ApiResponse> InfoDelete(int InfoId)
         {
             var operation = new DeleteInfoCommand(InfoId);
             var result = await mediator.Send(operation);
