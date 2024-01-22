@@ -33,6 +33,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddFluentValidation(x =>
 {
     x.RegisterValidatorsFromAssemblyContaining<CreateUserValidator>();
+    x.RegisterValidatorsFromAssemblyContaining<DemandValidator>();
+    x.RegisterValidatorsFromAssemblyContaining<InfoValidator>();
+    x.RegisterValidatorsFromAssemblyContaining<InfoUpdateRequestValidator>();
+    x.RegisterValidatorsFromAssemblyContaining<DemandRequestAdminValidator>();
 }).AddJsonOptions(options =>
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
