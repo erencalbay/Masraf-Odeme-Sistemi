@@ -42,3 +42,7 @@ https://dotnet.microsoft.com/en-us/download/dotnet/7.0
 
 
 NOT: Bu adımlardan sonra projeyi indirip VS üzerinden çözümü açarsanız projeye erişebilirsiniz. Ana çalışma projesini http ile açın. Swagger'ın düzgün görüntülenmesi için varsayılan tarayıcı olarak Chrome'u kullanmanızı öneririm.
+
+### Projenin Ekran Görüntüleri
+Projenin ekran görüntülerini içeren dokümantasyon dosyasını aşağıdaki linkte bulabilirsiniz.
+https://docs.google.com/document/d/1DM8PfOd-xNW58pbgYJvjil5F_43MT8WRlid8uw_ZaTg/edit?usp=sharing
